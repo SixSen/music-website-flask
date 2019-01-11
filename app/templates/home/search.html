@@ -1,0 +1,37 @@
+{% extends "home/nav.html" %}
+
+{% block username %}
+{{ name }}
+{% endblock %}
+
+{% block content %}
+<h4>关于"{{ key }}"的结果共有{{ count }}条</h4>
+{#{% for v in page_data %}#}
+{#<div>#}
+{##}
+{#{{ v.music_name }}#}
+{##}
+{#</div>#}
+{#{% endfor %}#}
+
+<div class="col-md-12">
+            {% for v in page_data %}
+                <div class="media">
+                    <div class="media-left">
+                        <a href="{{ url_for('home.play',id=v.id) }}">
+                           {{ v.music_name }}
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">{{ v.author}}<a href="{{ url_for('home.play',id=v.music_id) }}"
+                                                                  class="label label-primary pull-right"><span
+                                class="glyphicon glyphicon-play"></span>播放音乐</a></h4>
+                        <h4 class="media-heading">歌曲风格：{{ v.style }}<a href="{{ url_for('home.play',id=v.music_id) }}"
+                                                                  class="label label-primary pull-right"><span
+                                class="glyphicon glyphicon-shopping-cart"></span>购买音乐</a></h4>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+{% endblock %}
