@@ -57,12 +57,26 @@ def logout():
 # 播放
 @home.route("/play/")
 def play():
-    musicd = request.args.get('id')
+    musicd = int(request.args.get('id'))
     vclass = session.get('vclass')
     if vclass == 0:
-
-        return render_template("home/play.html", name = session.get('user'),user = session.get('user_id'),id = musicd)
-
+        conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
+        cursor = conn.cursor()
+        id = session.get('user_id')
+        sql = "SELECT music_id FROM buy WHERE id = '%s' " % id
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        print(results)
+        isbuy = 0
+        for rol in results:
+            if musicd == rol[0]:
+                isbuy = 1
+        if isbuy == 1:
+            return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicd)
+        else:
+            return "请购买"
+    else:
+        return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicd)
 # 注册
 @home.route("/register/", methods=["GET", "POST"])
 def register():

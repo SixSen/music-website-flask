@@ -54,9 +54,9 @@
         <div class="navbar-collapse collapse">
             <form class="navbar-form navbar-left" role="search" style="margin-top:8px;">
                 <div class="form-group input-group">
-                    <input type="text" class="form-control" placeholder="搜索音乐">
+                    <input type="text" class="form-control" placeholder="搜索音乐" id="key_music" >
                     <span class="input-group-btn">
-                        <a class="btn btn-default" href="search.html"><span class="glyphicon glyphicon-search"></span>&nbsp;搜索</a>
+                        <a class="btn btn-default" id="do_search"><span class="glyphicon glyphicon-search"></span>&nbsp;搜索</a>
                     </span>
                 </div>
             </form>
@@ -92,6 +92,7 @@
         <div class="row">
             <div class="col-md-12">
                 <p>
+                <hr>
                     16070641&nbsp;数据库课程设计.音乐库管理系统&nbsp;基于Flask与MySQL数据库
                 </p>
             </div>
@@ -116,7 +117,12 @@
         $("img.lazy").lazyload({
             effect: "fadeIn"
         });
+        $("#do_search").click(function () {
+            var key = $("#key_music").val();
+            location.href = "{{ url_for('home.search')}}?key=" + key
+        });
     });
+
 
 </script>
 </body>
