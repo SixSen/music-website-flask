@@ -11,10 +11,10 @@ app = Flask(__name__)
 
 # 用于连接数据的数据库。
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:1232123@127.0.0.1:3306/musicdb"
-
+# app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:ORUkJIcJRTZhySNt@47.93.242.157/test"
 # app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:nucoj@39.106.214.230:3306/musicdb"
 # Flask-SQLAlchemy 将会追踪对象的修改并且发送信号。
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
@@ -27,7 +27,7 @@ class User(db.Model):
     email = db.Column(db.String(100), nullable=False)  # 邮箱
     vclass = db.Column(db.Integer, default=0, nullable=False)       # 会员标志
     phone = db.Column(db.String(11), unique=True, nullable=False)   # 手机号
-    end = db.Column(db.DateTime, index=True, default=datetime.datetime.now(), nullable=False)   # 会员到期日期
+    end = db.Column(db.DateTime, index=True, default=datetime.datetime.now())   # 会员到期日期
     wallet = db.Column(db.Float, default=0, nullable=False)         # 余额
 
     # music = db.relationship('Music', backref='music')

@@ -5,6 +5,7 @@ from app.home.forms import LoginForm, RegisterForm
 from app.models import User, Music
 from app import db, app, rd
 import pymysql
+
 #@ home = Blueprint("home",__name__)
 
 # session.permantent = True
@@ -74,7 +75,7 @@ def play():
         if isbuy == 1:
             return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicd)
         else:
-            return "请购买"
+            return "<h1>请购买此歌曲</h1>"
     else:
         return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicd)
 # 注册
@@ -94,6 +95,11 @@ def register():
         flash("注册成功！", "ok")
     return render_template("home/register.html", form=form)
 
+
+# 购买
+@home.route("/buy")
+def buy():
+    return "buy"
 
 # 搜索
 @home.route("/search")
