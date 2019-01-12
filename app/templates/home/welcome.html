@@ -8,7 +8,10 @@
 
 
 {% block content %}
-<h1>欢迎回来，{{ name }},vip:{{ vclass }}</h1>
+
+<h1>    {% if vclass == 1 %}
+    尊敬的VIP会员
+    {% endif %}{{ name }}，欢迎回来</h1>
     <div style="margin-top: 10px">
 
         <h3>热歌排行榜</h3>

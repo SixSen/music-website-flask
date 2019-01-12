@@ -6,6 +6,9 @@ from app.models import User, Music, Board
 from app import db, app, rd
 import pymysql
 
+
+conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
+# conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
 #@ home = Blueprint("home",__name__)
 
 # session.permantent = True
@@ -64,7 +67,9 @@ def logout():
 # 播放
 @home.route("/play/")
 def play():
-    conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
+    if session.get('user') is None:
+        flash("请先登录才能播放音乐", "err")
+        return redirect(url_for('home.login'))
     cursor = conn.cursor()
     musicd = int(request.args.get('id'))
     vclass = session.get('vclass')
@@ -89,7 +94,8 @@ def play():
         if isbuy == 1:
             return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicd)
         else:
-            return "<h1>请购买此歌曲</h1>"
+            flash('请先购买此歌曲或订阅会员-err:%d' % musicd)
+            return render_template("home/msg.html")
     else:
         return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicd)
 # 注册

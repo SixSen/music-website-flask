@@ -6,6 +6,14 @@
 
 {% block content %}
 <h4>关于"{{ key }}"的结果共有{{ count }}条</h4>
+                    {% for msg in get_flashed_messages(category_filter=["err"]) %}
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
+                            </button>
+                            <h4><i class="icon fa fa-check"></i> 操作失败</h4>
+                            {{ msg }}
+                        </div>
+                    {% endfor %}
 {#{% for v in page_data %}#}
 {#<div>#}
 {##}
@@ -13,15 +21,11 @@
 {##}
 {#</div>#}
 {#{% endfor %}#}
-<ul class="nav nav-pills">
-  <li role="presentation" class="active"><a href="#">Home</a></li>
-  <li role="presentation"><a href="#">Profile</a></li>
-  <li role="presentation"><a href="#">Messages</a></li>
-</ul>
+
 <div class="col-md-12">
             {% for v in page_data %}
                 <div class="media">
-                    <div class="media-left">
+                    <div class="media-left" style="width: 5000px">
                         <a href="{{ url_for('home.play',id=v.id) }}">
                            {{ v.music_name }}
                         </a>
@@ -33,6 +37,9 @@
                         <h4 class="media-heading">歌曲风格：{{ v.style }}<a href="{{ url_for('home.play',id=v.music_id) }}"
                                                                   class="label label-primary pull-right"><span
                                 class="glyphicon glyphicon-shopping-cart"></span>&nbsp;购买音乐</a></h4>
+                        <h4 class="media-heading">播放次数：{{ v.listen}}<a href="{{ url_for('home.play',id=v.music_id) }}"
+                                                                  class="label label-primary pull-right"><span
+                                class="glyphicon glyphicon-star"></span>&nbsp;收藏音乐</a></h4>
                     </div>
                 </div>
             {% endfor %}
