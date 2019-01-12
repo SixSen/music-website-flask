@@ -9,4 +9,53 @@
 
 {% block content %}
 <h1>欢迎回来，{{ name }},vip:{{ vclass }}</h1>
+    <div style="margin-top: 10px">
+
+        <h3>热歌排行榜</h3>
+    <hr>
+<section id="movielist">
+
+  <div class="container">
+        <div class="row wow fadeIn" data-wow-delay="0.6s">
+            {% for v in page_data %}
+
+            <div class="col-md-3">
+                <div class="movielist text-center">
+                    <!--<img data-original="holder.js/262x166"
+                             class="img-responsive lazy center-block" alt="">-->
+{#                    <img src="holder.js/262x166" class="img-responsive center-block" alt="">#}
+                    <div class="text-left" style="margin-left:auto;margin-right:auto;width: 200px;margin-bottom: 10px;margin-top:10px">
+                        <span style="color:rgb(10, 1, 1);font-style: italic;">{{ v.board_id }}--{{ v.music_name }}</span>
+                    </div>
+                    <a href="{{ url_for('home.play',id=v.music_id) }}" class="btn btn-primary" target="_blank" role="button"><span class="glyphicon glyphicon-play"></span>&nbsp;播放</a>
+                    <a href="{{ url_for('home.play',id=v.music_id) }}" class="btn btn-primary" target="_blank" role="button"><span class="glyphicon glyphicon-star"></span>&nbsp;收藏</a>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+        </div>
+
+</section>
+ </div>
+
+
+{#       <div class="container">#}
+{#        <div class="ro wow fadeIn" data-wow-delay="0.6s">#}
+{#            <div class="col-md-3">#}
+{#                <div class="movielist text-center">#}
+{#                    <!--<img data-original="holder.js/262x166"#}
+{#                             class="img-responsive lazy center-block" alt="">-->#}
+{#                    <img src="holder.js/262x166" class="img-responsive center-block" alt="">#}
+{#                    <div class="text-left" style="margin-left:auto;margin-right:auto;width:210px;">#}
+{#                        <span style="color:rgb(10, 1, 1);font-style: italic;">01--知否知否</span>#}
+{#                    </div>#}
+{#                    <a href="{{ url_for('home.play',id=v.id) }}" class="btn btn-primary" target="_blank" role="button"><span class="glyphicon glyphicon-play"></span>&nbsp;播放</a>#}
+{#                    <a href="{{ url_for('home.play',id=v.id) }}" class="btn btn-primary" target="_blank" role="button"><span class="glyphicon glyphicon-star"></span>&nbsp;收藏</a>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        </div>#}
+</section>
 {% endblock %}

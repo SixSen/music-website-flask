@@ -21,12 +21,12 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True)    # 编号
-    name = db.Column(db.String(100), unique=True, nullable=False)   # 昵称
+    id = db.Column(db.Integer, primary_key=True, unique=True)    # 编号
+    name = db.Column(db.String(100) , nullable=False)   # 昵称
     pwd = db.Column(db.String(100), nullable=False)                 # 密码
     email = db.Column(db.String(100), nullable=False)  # 邮箱
     vclass = db.Column(db.Integer, default=0, nullable=False)       # 会员标志
-    phone = db.Column(db.String(11), unique=True, nullable=False)   # 手机号
+    phone = db.Column(db.String(11), nullable=False)   # 手机号
     end = db.Column(db.DateTime, index=True, default=datetime.datetime.now())   # 会员到期日期
     wallet = db.Column(db.Float, default=0, nullable=False)         # 余额
 
@@ -45,7 +45,7 @@ class User(db.Model):
 
 class Music(db.Model):
     __tablename__ = 'music'
-    music_id = db.Column(db.Integer, primary_key=True)  # 歌曲编号
+    music_id = db.Column(db.Integer, primary_key=True, unique=True)  # 歌曲编号
     music_name = db.Column(db.String(100), nullable=False)          # 歌名
     author = db.Column(db.String(100), nullable=True)               # 歌手名
     download = db.Column(db.Integer, default=0, nullable=False)     # 下载次数
@@ -69,7 +69,7 @@ class Music(db.Model):
 
 class Library(db.Model):
     __tablename__ = 'library'
-    library_id = db.Column(db.Integer, primary_key=True, nullable=False)  # library主键
+    library_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)  # library主键
     id = db.Column(db.Integer, nullable=False)  # 收藏用户id
     list_id = db.Column(db.Integer, nullable=False)  # 收藏歌单id
 
@@ -83,7 +83,7 @@ class Library(db.Model):
 
 class List(db.Model):
     __tablename__ = 'list'
-    list_id = db.Column(db.Integer, primary_key=True, nullable=False)     # 收藏歌单id
+    list_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)     # 收藏歌单id
     music_id = db.Column(db.Integer, nullable=False)       # 歌曲id
 
     #list = db.relationship('Library')
@@ -94,7 +94,7 @@ class List(db.Model):
 
 class Buy(db.Model):
     __tablename__ = 'buy'
-    buy_id = db.Column(db.Integer, primary_key=True, nullable=False)  #
+    buy_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)  #
     id = db.Column(db.Integer,  nullable=False)        # 购买歌曲用户id
     music_id = db.Column(db.Integer, nullable=False)       # 已购买歌曲id
 
@@ -103,9 +103,16 @@ class Buy(db.Model):
     #     return '<User %r>' % self.name
 
 
+class Board(db.Model):
+    __tablename__ = 'board'
+    board_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
+    music_id = db.Column(db.Integer, nullable=False)
+    music_name = db.Column(db.String(100), nullable=False)
+
+
 class Admin(db.Model):
     __tablename__ = 'admin'
-    admin_id = db.Column(db.Integer, primary_key=True, nullable=False)      # 管理员账号
+    admin_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)      # 管理员账号
     admin_pwd = db.Column(db.String(100), nullable=False)       # 管理员密码
 
     # def __repr__(self):
@@ -114,7 +121,7 @@ class Admin(db.Model):
 
 class Author(db.Model):
     __tablename__ = 'author'
-    author_id = db.Column(db.Integer, primary_key=True, nullable=False)     # 歌手id
+    author_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)     # 歌手id
     author_name = db.Column(db.String(100), nullable=False)     # 歌手名
 
     # def __repr__(self):
