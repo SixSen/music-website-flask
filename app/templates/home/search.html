@@ -1,47 +1,42 @@
 {% extends "home/nav.html" %}
 
 {% block username %}
-{{ name }}
+    {{ name }}
 {% endblock %}
 
 {% block content %}
-<h4>关于"{{ key }}"的结果共有{{ count }}条</h4>
-                    {% for msg in get_flashed_messages(category_filter=["err"]) %}
-                        <div class="alert alert-success alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
-                            </button>
-                            <h4><i class="icon fa fa-check"></i> 操作失败</h4>
-                            {{ msg }}
-                        </div>
-                    {% endfor %}
-{#{% for v in page_data %}#}
-{#<div>#}
-{##}
-{#{{ v.music_name }}#}
-{##}
-{#</div>#}
-{#{% endfor %}#}
+    <h4>关于"{{ key }}"的结果共有{{ count }}条</h4>
+    {#                    {% for msg in get_flashed_messages(category_filter=["err"]) %}#}
+    {#                        <div class="alert alert-success alert-dismissible">#}
+    {#                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×#}
+    {#                            </button>#}
+    {#                            <h4><i class="icon fa fa-check"></i> 操作失败</h4>#}
+    {#                            {{ msg }}#}
+    {#                        </div>#}
+    {#                    {% endfor %}#}
 
-<div class="col-md-12">
-            {% for v in page_data %}
-                <div class="media">
-                    <div class="media-left" style="width: 5000px">
-                        <a href="{{ url_for('home.play',id=v.id) }}">
-                           {{ v.music_name }}
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">{{ v.author}}<a href="{{ url_for('home.play',id=v.music_id) }}"
-                                                                  class="label label-primary pull-right"><span
-                                class="glyphicon glyphicon-play"></span>&nbsp;播放音乐</a></h4>
-                        <h4 class="media-heading">歌曲风格：{{ v.style }}<a href="{{ url_for('home.play',id=v.music_id) }}"
-                                                                  class="label label-primary pull-right"><span
-                                class="glyphicon glyphicon-shopping-cart"></span>&nbsp;购买音乐</a></h4>
-                        <h4 class="media-heading">播放次数：{{ v.listen}}<a href="{{ url_for('home.play',id=v.music_id) }}"
-                                                                  class="label label-primary pull-right"><span
-                                class="glyphicon glyphicon-star"></span>&nbsp;收藏音乐</a></h4>
-                    </div>
+
+    <div class="col-md-12">
+        {% for v in page_data %}
+            <div class="media">
+                <div class="media-left" style="width: 3000px">
+                    <a href="{{ url_for('home.play',id=v.music_id) }}">
+                        <h4>{{ v.music_name }}</h4>
+                    </a>
                 </div>
-            {% endfor %}
-        </div>
+                <div class="media-body">
+                    <h4 class="media-heading">{{ v.author }}<a href="{{ url_for('home.play',id=v.music_id) }}"
+                                                               class="label label-primary pull-right"><span
+                            class="glyphicon glyphicon-play"></span>&nbsp;播放音乐</a></h4>
+                    <h4 class="media-heading">播放次数：{{ v.listen }}<a href="{{ url_for('home.play',id=v.music_id) }}"
+                                                                    class="label label-primary pull-right"><span
+                            class="glyphicon glyphicon-star"></span>&nbsp;收藏音乐</a></h4>
+                    <h4 class="media-heading">歌曲风格：{{ v.style }}<a href="{{ url_for('home.buy',id=v.music_id) }}"
+                                                                   class="label label-primary pull-right"><span
+                            class="glyphicon glyphicon-shopping-cart"></span>&nbsp;购买音乐</a></h4>
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

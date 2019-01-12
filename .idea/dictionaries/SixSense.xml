@@ -2,6 +2,7 @@
   <dictionary name="SixSense">
     <words>
       <w>musicdb</w>
+      <w>pymysql</w>
       <w>sqlalchemy</w>
       <w>tablename</w>
       <w>vclass</w>

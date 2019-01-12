@@ -1,39 +1,44 @@
 {% extends "home/home.html" %}
 
-
 {% block content %}
-<h1>欢迎进入微音乐™音乐库管理系统</h1>
-
+    <h1>欢迎进入微音乐™音乐库管理系统</h1>
+    <br>
     <div style="margin-top: 10px">
-
         <h3>热歌排行榜</h3>
-    <hr>
-<section id="movielist">
+        <hr>
+        <section id="movielist">
+            <div class="container">
+                <div class="row wow fadeIn" data-wow-delay="0.6s">
+                    {% for v in page_data %}
+                        <div class="col-md-3">
+                            <div class="movielist text-center">
+                                <!--<img data-original="holder.js/262x262"
+                                         class="img-responsive lazy center-block" alt="">-->
+                                {#                    <img src="holder.js/262x166" class="img-responsive center-block" alt="">#}
+                                <div class="text-left"
+                                     style="margin-left:auto;margin-right:auto;width: 200px;margin-bottom: 10px;margin-top:15px">
+                                    <h4>
+                                        <span style="color: rgba(30,30,30,0.99);font-style: italic;">
+                                        {{ v.board_id }} . {{ v.music_name }}
+                                    </span>
+                                    </h4>
+                                </div>
+                                <a href="{{ url_for('home.play',id=v.music_id) }}" class="btn btn-primary"
+                                   style="height:30px"
+                                   role="button"><span class="glyphicon glyphicon-play" style=""></span>&nbsp;播放</a>
+                                <a href="{{ url_for('home.play',id=v.music_id) }}" class="btn btn-primary"
+                                   style="height:30px"
+                                   role="button"><span class="glyphicon glyphicon-star"></span>&nbsp;收藏</a>
+                                <a href="{{ url_for('home.play',id=v.music_id) }}" class="btn btn-primary"
+                                   style="height:30px"
+                                   role="button"><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;购买</a>
+                            </div>
+                        </div>
+                    {% endfor %}
 
-  <div class="container">
-        <div class="row wow fadeIn" data-wow-delay="0.6s">
-            {% for v in page_data %}
-
-            <div class="col-md-3">
-                <div class="movielist text-center">
-                    <!--<img data-original="holder.js/262x166"
-                             class="img-responsive lazy center-block" alt="">-->
-{#                    <img src="holder.js/262x166" class="img-responsive center-block" alt="">#}
-                    <div class="text-left" style="margin-left:auto;margin-right:auto;width: 200px;margin-bottom: 10px;margin-top:10px">
-
-                        <span style="color:rgb(10, 1, 1);font-style: italic;">{{ v.board_id }}--{{ v.music_name }}
-                        </span>
-                    </div>
-                    <a href="{{ url_for('home.play',id=v.music_id) }}" class="btn btn-primary" target="_blank" role="button"><span class="glyphicon glyphicon-play"></span>&nbsp;播放</a>
-                    <a href="{{ url_for('home.play',id=v.music_id) }}" class="btn btn-primary" target="_blank" role="button"><span class="glyphicon glyphicon-star"></span>&nbsp;收藏</a>
                 </div>
             </div>
 
-            {% endfor %}
-
-        </div>
-        </div>
-
-</section>
- </div>
+        </section>
+    </div>
 {% endblock %}

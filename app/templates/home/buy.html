@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "home/nav.html" %}
 
-</body>
-</html>
+
+{% block username %}
+    {{ name }}
+{% endblock %}
+
+{% block content %}
+
+    {% for msg in get_flashed_messages() %}
+        <h1>
+            {{ msg }}
+        </h1>
+    {% endfor %}
+
+{% endblock %}

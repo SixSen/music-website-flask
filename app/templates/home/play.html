@@ -1,9 +1,12 @@
 {% extends "home/nav.html" %}
 
 {% block username %}
-{{ name }}
+    {{ name }}
 {% endblock %}
 
 {% block content %}
     <h1>用户id：{{ user }}————播放了music_id为{{ id }}的歌曲</h1>
+    <br>
+    <a href="javascript:history.back(-1);" class="btn btn-primary"
+       target="_blank" role="button"><span class="glyphicon glyphicon-menu-left"></span>&nbsp;返回</a>
 {% endblock %}
