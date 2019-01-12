@@ -5,10 +5,11 @@ from app.home.forms import LoginForm, RegisterForm, UserdetailForm, PwdForm
 from app.models import User, Music, Board, Buy, db
 # from app import db, app, rd
 import pymysql
-
+import datetime
 
 # pymysql的数据库连接
 conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
+
 
 # conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
 # @ home = Blueprint("home",__name__)
@@ -32,7 +33,8 @@ def welcome():
     ).order_by(
         Board.board_id
     )
-    return render_template("home/welcome.html", name=session.get('user'), vclass=session.get('vclass'), page_data=page_data)
+    return render_template("home/welcome.html", name=session.get('user'), vclass=session.get('vclass'),
+                           page_data=page_data)
 
 
 # 登录
@@ -106,6 +108,7 @@ def user():
         return redirect(url_for("home.user"))
     return render_template("home/user.html", name=session.get('user'), form=form, user=user)
 
+
 # 密码修改
 @home.route("/pwd/", methods=["GET", "POST"])
 def pwd():
@@ -121,7 +124,8 @@ def pwd():
         db.session.commit()
         flash("修改密码成功，请重新登录！", "ok")
         return redirect(url_for('home.logout'))
-    return render_template("home/pwd.html",name=session.get('user'),  form=form)
+    return render_template("home/pwd.html", name=session.get('user'), form=form)
+
 
 # 订阅会员
 @home.route("/sub/", methods=["GET", "POST"])
@@ -138,7 +142,33 @@ def sub():
         db.session.commit()
         flash("修改密码成功，请重新登录！", "ok")
         return redirect(url_for('home.logout'))
-    return render_template("home/subscribe.html",name=session.get('user'),  form=form)
+    return render_template("home/subscribe.html", name=session.get('user'), form=form)
+
+
+# 确认订阅
+@home.route("/getsub/")
+def getsub():
+    user = User.query.filter_by(name=session["user"]).first()
+    if user.vclass == 1:
+        flash("您已经是会员了，无需订购")
+        return render_template("home/msg.html", name=session.get('user'))
+    else:
+        uss = user.wallet
+        uss = uss - 15
+        if uss < 0:
+            flash("余额不足，余额需要大于15元才可办理")
+            return render_template("home/msg.html", name=session.get('user'))
+        user.wallet = uss
+        user.vclass = 1
+        next_end = datetime.datetime.now() + datetime.timedelta(days=30)
+        user.end = next_end
+        db.session.add(user)
+        db.session.commit()
+        flash("您已经成功办理会员，当前余额%d元" % uss)
+        session.pop("vclass", None)
+        session["vclass"] = 1
+        return render_template("home/msg.html", name=session.get('user'))
+
 
 # 播放音乐
 @home.route("/play/")
@@ -171,7 +201,7 @@ def play():
             return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicd)
         else:
             flash('请先购买此歌曲或订阅会员-err:%d' % musicd)
-            return render_template("home/msg.html")
+            return render_template("home/msg.html", name=session.get('user'))
     else:
         return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicd)
 
@@ -211,11 +241,14 @@ def buy():
     for k in results0:
         if 1 == k[0]:
             flash("此歌曲为免费歌曲，无需购买")
-            return render_template("home/msg.html")
+            return render_template("home/msg.html", name=session.get('user'))
+    if int(session.get("vclass")) == 1:
+        flash("您现在为会员，无需单独购买歌曲")
+        return render_template("home/msg.html", name=session.get('user'))
     for rol in results:
         if musicd == rol[0]:
             flash("您已经购买过此歌曲，请勿重复购买！")
-            return render_template("home/msg.html")
+            return render_template("home/msg.html", name=session.get('user'))
     result = User.query.filter(User.id == session.get('user_id')).first()
     uss = result.wallet
     uss = uss - 2
@@ -234,7 +267,7 @@ def buy():
         db.session.add(buy)
         db.session.commit()
         flash("购买成功，账户扣除2元，当前余额%d元" % wallet)
-    return render_template("home/msg.html")
+    return render_template("home/msg.html", name=session.get('user'))
 
 
 # 搜索
