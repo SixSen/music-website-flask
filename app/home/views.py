@@ -68,8 +68,13 @@ def logout():
     session.pop("user", None)
     session.pop("user_id", None)
     session.pop("vclass", None)
-    flash("您已成功登出！", "ok")
     return redirect(url_for('home.login'))
+
+
+@home.route("/out/")
+def out():
+    flash("您已成功登出！", "ok")
+    return redirect(url_for('home.logout'))
 
 
 # 个人中心
@@ -168,6 +173,24 @@ def getsub():
         session.pop("vclass", None)
         session["vclass"] = 1
         return render_template("home/msg.html", name=session.get('user'))
+
+
+# 充值钱包
+@home.route("/wallet/", methods=["GET", "POST"])
+def wallet():
+    form = PwdForm()
+    if form.validate_on_submit():
+        data = form.data
+        user = User.query.filter_by(name=session["user"]).first()
+        if not user.check_pwd(data["old_pwd"]):
+            flash("旧密码错误！", "err")
+            return redirect(url_for('home.pwd'))
+        user.pwd = generate_password_hash(data["new_pwd"])
+        db.session.add(user)
+        db.session.commit()
+        flash("修改密码成功，请重新登录！", "ok")
+        return redirect(url_for('home.logout'))
+    return render_template("home/subscribe.html", name=session.get('user'), form=form)
 
 
 # 播放音乐

@@ -15,14 +15,13 @@
     {#                        </div>#}
     {#                    {% endfor %}#}
 
-
     <div class="col-md-12">
         {% for v in page_data %}
             <div class="media">
                 <div class="media-left" style="width: 3000px">
-                    <a href="{{ url_for('home.play',id=v.music_id) }}">
-                        <h4>{{ v.music_name }}</h4>
-                    </a>
+                    {#                    <a href="{{ url_for('home.play',id=v.music_id) }}">#}
+                    <h3>{{ v.music_name }}</h3>
+                    {#                    </a>#}
                 </div>
                 <div class="media-body">
                     <h4 class="media-heading">{{ v.author }}<a href="{{ url_for('home.play',id=v.music_id) }}"
