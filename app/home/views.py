@@ -1,17 +1,17 @@
 from flask import Blueprint, render_template, redirect, flash, url_for, session, request, Response
 from werkzeug.security import generate_password_hash
 from . import home
-from app.home.forms import LoginForm, RegisterForm, UserdetailForm, PwdForm
+from app.home.forms import LoginForm, RegisterForm, UserdetailForm, PwdForm, WalletForm
 from app.models import User, Music, Board, Buy, db
 # from app import db, app, rd
 import pymysql
 import datetime
 
 # pymysql的数据库连接
-conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
+#conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
 
 
-# conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
+conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
 # @ home = Blueprint("home",__name__)
 # session.permantent = True
 
@@ -155,42 +155,48 @@ def sub():
 def getsub():
     user = User.query.filter_by(name=session["user"]).first()
     if user.vclass == 1:
-        flash("您已经是会员了，无需订购")
-        return render_template("home/msg.html", name=session.get('user'))
+        flash("您已经是会员了，无需订购", "err")
+        return redirect(url_for('home.sub'))
     else:
         uss = user.wallet
         uss = uss - 15
         if uss < 0:
-            flash("余额不足，余额需要大于15元才可办理")
-            return render_template("home/msg.html", name=session.get('user'))
+            flash("余额不足，余额需要大于15元才可办理", "err")
+            return redirect(url_for('home.sub'))
         user.wallet = uss
         user.vclass = 1
         next_end = datetime.datetime.now() + datetime.timedelta(days=30)
         user.end = next_end
         db.session.add(user)
         db.session.commit()
-        flash("您已经成功办理会员，当前余额%d元" % uss)
+        end = user.end.strftime('%Y-%m-%d')
+        flash("您已经成功办理会员，当前余额%d元，会员有效期至%s" % (uss, end), "ok")
         session.pop("vclass", None)
         session["vclass"] = 1
-        return render_template("home/msg.html", name=session.get('user'))
+        return redirect(url_for('home.sub'))
 
 
 # 充值钱包
 @home.route("/wallet/", methods=["GET", "POST"])
 def wallet():
-    form = PwdForm()
+    form = WalletForm()
     if form.validate_on_submit():
         data = form.data
+        money = int(data["money"])
+        print(money,"=========================money")
         user = User.query.filter_by(name=session["user"]).first()
-        if not user.check_pwd(data["old_pwd"]):
-            flash("旧密码错误！", "err")
-            return redirect(url_for('home.pwd'))
-        user.pwd = generate_password_hash(data["new_pwd"])
-        db.session.add(user)
-        db.session.commit()
-        flash("修改密码成功，请重新登录！", "ok")
-        return redirect(url_for('home.logout'))
-    return render_template("home/subscribe.html", name=session.get('user'), form=form)
+        if money <= 0:
+            flash("充值金额需大于0！", "err")
+            return redirect(url_for('home.wallet'))
+        else:
+            uss = user.wallet
+            uss = uss+money
+            user.wallet = uss
+            db.session.add(user)
+            db.session.commit()
+            flash("充值成功！，当前账户余额为%d元" % uss, "ok")
+            return redirect(url_for('home.wallet'))
+    return render_template("home/wallet.html", name=session.get('user'), form=form)
 
 
 # 播放音乐

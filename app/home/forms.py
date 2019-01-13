@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, FileField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, FileField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, Email, Regexp, EqualTo, ValidationError
 from app.models import User
 
@@ -195,6 +195,26 @@ class PwdForm(FlaskForm):
     )
     submit = SubmitField(
         '修改密码',
+        render_kw={
+            "class": "btn btn-success",
+        }
+    )
+
+
+class WalletForm(FlaskForm):
+    money = StringField(
+        label="充值金额",
+        validators=[
+            DataRequired("充值金额不能为空！")
+        ],
+        description="充值金额",
+        render_kw={
+            "class": "form-control",
+            "placeholder": "请输入充值金额",
+        }
+    )
+    submit = SubmitField(
+        '确认充值',
         render_kw={
             "class": "btn btn-success",
         }
