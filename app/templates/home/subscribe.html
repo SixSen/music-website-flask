@@ -13,7 +13,7 @@
             <div>
                 <div class="form-group">
                     {% for msg in get_flashed_messages(category_filter=["err"]) %}
-                        <div class="alert alert-success alert-dismissible">
+                        <div class="alert alert-danger alert-dismissible">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
                             </button>
                             <h4><i class="icon fa fa-check"></i> 订阅失败</h4>

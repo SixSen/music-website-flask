@@ -12,14 +12,14 @@ class SearchForm(FlaskForm):
 
 class RegisterForm(FlaskForm):
     name = StringField(
-        label="昵称",
+        label="账号",
         validators=[
-            DataRequired("昵称不能为空！")
+            DataRequired("账号不能为空！")
         ],
         description="昵称",
         render_kw={
             "class": "form-control input-lg",
-            "placeholder": "请输入昵称！",
+            "placeholder": "请输入账号",
         }
     )
     email = StringField(
@@ -31,7 +31,7 @@ class RegisterForm(FlaskForm):
         description="邮箱",
         render_kw={
             "class": "form-control input-lg",
-            "placeholder": "请输入邮箱！",
+            "placeholder": "请输入邮箱",
         }
     )
     phone = StringField(
@@ -43,7 +43,7 @@ class RegisterForm(FlaskForm):
         description="手机",
         render_kw={
             "class": "form-control input-lg",
-            "placeholder": "请输入手机！",
+            "placeholder": "请输入手机",
         }
     )
     pwd = PasswordField(
@@ -54,7 +54,7 @@ class RegisterForm(FlaskForm):
         description="密码",
         render_kw={
             "class": "form-control input-lg",
-            "placeholder": "请输入密码！",
+            "placeholder": "请输入密码",
         }
     )
     repwd = PasswordField(
@@ -66,7 +66,7 @@ class RegisterForm(FlaskForm):
         description="确认密码",
         render_kw={
             "class": "form-control input-lg",
-            "placeholder": "请输入确认密码！",
+            "placeholder": "请输入确认密码",
         }
     )
     submit = SubmitField(
@@ -104,7 +104,7 @@ class LoginForm(FlaskForm):
         description="账号",
         render_kw={
             "class": "form-control input-lg",
-            "placeholder": "请输入账号！",
+            "placeholder": "请输入账号",
         }
     )
     pwd = PasswordField(
@@ -115,7 +115,7 @@ class LoginForm(FlaskForm):
         description="密码",
         render_kw={
             "class": "form-control input-lg",
-            "placeholder": "请输入密码！",
+            "placeholder": "请输入密码",
         }
     )
     submit = SubmitField(
@@ -135,7 +135,7 @@ class UserdetailForm(FlaskForm):
         description="账号",
         render_kw={
             "class": "form-control",
-            "placeholder": "请输入账号！",
+            "placeholder": "请输入账号",
         }
     )
     email = StringField(
@@ -147,7 +147,7 @@ class UserdetailForm(FlaskForm):
         description="邮箱",
         render_kw={
             "class": "form-control",
-            "placeholder": "请输入邮箱！",
+            "placeholder": "请输入邮箱",
         }
     )
     phone = StringField(
@@ -159,7 +159,7 @@ class UserdetailForm(FlaskForm):
         description="手机",
         render_kw={
             "class": "form-control",
-            "placeholder": "请输入手机！",
+            "placeholder": "请输入手机",
         }
     )
     submit = SubmitField(
@@ -179,7 +179,7 @@ class PwdForm(FlaskForm):
         description="旧密码",
         render_kw={
             "class": "form-control",
-            "placeholder": "请输入旧密码！",
+            "placeholder": "请输入旧密码",
         }
     )
     new_pwd = PasswordField(
@@ -190,7 +190,7 @@ class PwdForm(FlaskForm):
         description="新密码",
         render_kw={
             "class": "form-control",
-            "placeholder": "请输入新密码！",
+            "placeholder": "请输入新密码",
         }
     )
     submit = SubmitField(

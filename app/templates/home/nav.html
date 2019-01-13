@@ -63,11 +63,11 @@
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a class="curlink" href="{{ url_for('home.index') }}"><span
+                    <a class="curlink" href="{{ url_for('home.mybuy') }}"><span
                             class="glyphicon glyphicon-headphones"></span>&nbsp;音乐库</a>
                 </li>
                 <li>
-                    <a class="curlink" href="{{ url_for('home.login') }}"><span class="glyphicon glyphicon-user"></span>&nbsp;ID:
+                    <a class="curlink" href="{{ url_for('home.user') }}"><span class="glyphicon glyphicon-user"></span>&nbsp;ID:
                         {% block username %}
                         {% endblock %}</a>
                 </li>
@@ -76,7 +76,7 @@
                             class="glyphicon glyphicon-log-out"></span>&nbsp;退出</a>
                 </li>
                 <li>
-                    <a class="curlink" href="{{ url_for('home.user') }}"><span class="glyphicon glyphicon-cog"></span>&nbsp;个人中心</a>
+                    <a class="curlink" href="{{ url_for('home.sub') }}"><span class="glyphicon glyphicon-cog"></span>&nbsp;个人中心</a>
                 </li>
             </ul>
         </div>

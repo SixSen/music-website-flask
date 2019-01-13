@@ -7,13 +7,13 @@ from app.models import User, Music, Board, Buy, db
 import pymysql
 import datetime
 
+'''
+views是主要的路由文件
+'''
 # pymysql的数据库连接
-#conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
-
-
+# conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
 conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
 # @ home = Blueprint("home",__name__)
-# session.permantent = True
 
 
 # 根路由
@@ -77,7 +77,7 @@ def out():
     return redirect(url_for('home.logout'))
 
 
-# 个人中心
+# 个人中心——修改个人资料
 @home.route("/user/", methods=["GET", "POST"])
 # @user_login_req
 def user():
@@ -114,89 +114,88 @@ def user():
     return render_template("home/user.html", name=session.get('user'), form=form, user=user)
 
 
-# 密码修改
+# 个人中心——密码修改
 @home.route("/pwd/", methods=["GET", "POST"])
 def pwd():
     form = PwdForm()
     if form.validate_on_submit():
         data = form.data
-        user = User.query.filter_by(name=session["user"]).first()
-        if not user.check_pwd(data["old_pwd"]):
+        user1 = User.query.filter_by(name=session["user"]).first()
+        if not user1.check_pwd(data["old_pwd"]):
             flash("旧密码错误！", "err")
             return redirect(url_for('home.pwd'))
-        user.pwd = generate_password_hash(data["new_pwd"])
-        db.session.add(user)
+        user1.pwd = generate_password_hash(data["new_pwd"])
+        db.session.add(user1)
         db.session.commit()
         flash("修改密码成功，请重新登录！", "ok")
         return redirect(url_for('home.logout'))
     return render_template("home/pwd.html", name=session.get('user'), form=form)
 
 
-# 订阅会员
+# 个人中心——订阅会员
 @home.route("/sub/", methods=["GET", "POST"])
 def sub():
     form = PwdForm()
     if form.validate_on_submit():
         data = form.data
-        user = User.query.filter_by(name=session["user"]).first()
-        if not user.check_pwd(data["old_pwd"]):
+        user2 = User.query.filter_by(name=session["user"]).first()
+        if not user2.check_pwd(data["old_pwd"]):
             flash("旧密码错误！", "err")
             return redirect(url_for('home.pwd'))
-        user.pwd = generate_password_hash(data["new_pwd"])
-        db.session.add(user)
+        user2.pwd = generate_password_hash(data["new_pwd"])
+        db.session.add(user2)
         db.session.commit()
         flash("修改密码成功，请重新登录！", "ok")
         return redirect(url_for('home.logout'))
     return render_template("home/subscribe.html", name=session.get('user'), form=form)
 
 
-# 确认订阅
+# 个人中心——确认订阅
 @home.route("/getsub/")
 def getsub():
-    user = User.query.filter_by(name=session["user"]).first()
-    if user.vclass == 1:
+    user3 = User.query.filter_by(name=session["user"]).first()
+    if user3.vclass == 1:
         flash("您已经是会员了，无需订购", "err")
         return redirect(url_for('home.sub'))
     else:
-        uss = user.wallet
+        uss = user3.wallet
         uss = uss - 15
         if uss < 0:
             flash("余额不足，余额需要大于15元才可办理", "err")
             return redirect(url_for('home.sub'))
-        user.wallet = uss
-        user.vclass = 1
+        user3.wallet = uss
+        user3.vclass = 1
         next_end = datetime.datetime.now() + datetime.timedelta(days=30)
-        user.end = next_end
-        db.session.add(user)
+        user3.end = next_end
+        db.session.add(user3)
         db.session.commit()
-        end = user.end.strftime('%Y-%m-%d')
+        end = user3.end.strftime('%Y-%m-%d')
         flash("您已经成功办理会员，当前余额%d元，会员有效期至%s" % (uss, end), "ok")
         session.pop("vclass", None)
         session["vclass"] = 1
         return redirect(url_for('home.sub'))
 
 
-# 充值钱包
+# 个人中心——充值钱包
 @home.route("/wallet/", methods=["GET", "POST"])
 def wallet():
+    userm = User.query.filter_by(name=session["user"]).first()
     form = WalletForm()
     if form.validate_on_submit():
         data = form.data
-        money = int(data["money"])
-        print(money,"=========================money")
-        user = User.query.filter_by(name=session["user"]).first()
+        money = float(data["money"])
         if money <= 0:
             flash("充值金额需大于0！", "err")
             return redirect(url_for('home.wallet'))
         else:
-            uss = user.wallet
+            uss = userm.wallet
             uss = uss+money
-            user.wallet = uss
-            db.session.add(user)
+            userm.wallet = uss
+            db.session.add(userm)
             db.session.commit()
-            flash("充值成功！，当前账户余额为%d元" % uss, "ok")
+            flash("充值成功！，当前账户余额为%.2f元" % uss, "ok")
             return redirect(url_for('home.wallet'))
-    return render_template("home/wallet.html", name=session.get('user'), form=form)
+    return render_template("home/wallet.html", name=session.get('user'), form=form, money=userm.wallet)
 
 
 # 播放音乐
@@ -206,10 +205,10 @@ def play():
         flash("请先登录才能播放音乐", "err")
         return redirect(url_for('home.login'))
     cursor = conn.cursor()
-    musicd = int(request.args.get('id'))
+    musicid = int(request.args.get('id'))
     vclass = session.get('vclass')
     isbuy = 0
-    sql = "SELECT free FROM music WHERE music_id = '%s' " % musicd
+    sql = "SELECT free FROM music WHERE music_id = '%s' " % musicid
     cursor.execute(sql)
     results0 = cursor.fetchall()
     print(results0[0])
@@ -224,15 +223,15 @@ def play():
         print(results)
 
         for rol in results:
-            if musicd == rol[0]:
+            if musicid == rol[0]:
                 isbuy = 1
         if isbuy == 1:
-            return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicd)
+            return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicid)
         else:
-            flash('请先购买此歌曲或订阅会员-err:%d' % musicd)
+            flash('请先购买此歌曲或订阅会员-err:%d' % musicid)
             return render_template("home/msg.html", name=session.get('user'))
     else:
-        return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicd)
+        return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicid)
 
 
 # 注册
@@ -241,13 +240,13 @@ def register():
     form = RegisterForm()
     if form.validate_on_submit():
         data = form.data
-        user = User(
+        new_user = User(
             name=data["name"],
             email=data["email"],
             phone=data["phone"],
             pwd=generate_password_hash(data["pwd"]),
         )
-        db.session.add(user)
+        db.session.add(new_user)
         db.session.commit()
         flash("注册成功！", "ok")
     return render_template("home/register.html", form=form)
@@ -321,3 +320,10 @@ def search():
     # results = cursor.fetchall()
     # print(results)
     return render_template("home/search.html", name=session.get('user'), key=key, count=count, page_data=page_data)
+
+
+# 音乐库——已购买歌曲
+@home.route("/mybuy/")
+def mybuy():
+    return render_template("home/buy.html", name=session.get('user'))
+
