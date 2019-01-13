@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, flash, url_for, session,
 from werkzeug.security import generate_password_hash
 from . import home
 from app.home.forms import LoginForm, RegisterForm, UserdetailForm, PwdForm, WalletForm
-from app.models import User, Music, Board, Buy, db
+from app.models import User, Music, Board, Buy, db, Library
 # from app import db, app, rd
 import pymysql
 import datetime
@@ -12,8 +12,6 @@ views是主要的路由文件
 '''
 # pymysql的数据库连接
 # conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
-conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
-
 
 # @ home = Blueprint("home",__name__)
 
@@ -39,24 +37,50 @@ def welcome():
                            page_data=page_data)
 
 
-# 音乐库——风格排行榜
+# 音乐库
 @home.route("/fav/")
 def fav():
-    page_data = Music.query.filter(
-        Music.style == 'Pop'
-    ).order_by(
-        Music.listen.desc()
-    )
+    conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
+    cursor = conn.cursor()
+    sql = "SELECT music_id FROM library WHERE id = '%s' " % session.get("user_id")
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    musicd = []
+    for rol in results:
+        musicd.append(rol[0])
+    page_data =[]
+    for fid in musicd:
+        data = Music.query.filter(
+            Music.music_id == fid
+        ).order_by(
+            Music.listen.desc()
+        )
+        # print(fid)
+        page_data += data
+    # print(page_data)
     return render_template("home/fav.html", name=session.get('user'), page_data=page_data)
 
 
 @home.route("/mybuy/")
 def mybuy():
-    page_data = Music.query.filter(
-        Music.style == 'Pop'
-    ).order_by(
-        Music.listen.desc()
-    )
+    conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
+    cursor = conn.cursor()
+    sql = "SELECT music_id FROM buy WHERE id = '%s' " % session.get("user_id")
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    musicd = []
+    for rol in results:
+        musicd.append(rol[0])
+    page_data =[]
+    for bid in musicd:
+        data = Music.query.filter(
+            Music.music_id == bid
+        ).order_by(
+            Music.listen.desc()
+        )
+        # print(bid)
+        page_data += data
+    # print(page_data)
     return render_template("home/mybuy.html", name=session.get('user'), page_data=page_data)
 
 
@@ -126,7 +150,6 @@ def login():
             return redirect(url_for("home.login"))
 
         vclass = user.get_vclass()
-        print(vclass)
         session["user"] = user.name
         session["user_id"] = user.id
         session["vclass"] = vclass
@@ -274,6 +297,7 @@ def wallet():
 # 播放音乐
 @home.route("/play/")
 def play():
+    conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
     if session.get('user') is None:
         flash("请先登录才能播放音乐", "err")
         return redirect(url_for('home.login'))
@@ -284,7 +308,6 @@ def play():
     sql = "SELECT free FROM music WHERE music_id = '%s' " % musicid
     cursor.execute(sql)
     results0 = cursor.fetchall()
-    print(results0[0])
     for k in results0:
         if 1 == k[0]:
             isbuy = 1
@@ -293,8 +316,6 @@ def play():
         sql = "SELECT music_id FROM buy WHERE id = '%s' " % id
         cursor.execute(sql)
         results = cursor.fetchall()
-        print(results)
-
         for rol in results:
             if musicid == rol[0]:
                 isbuy = 1
@@ -330,20 +351,45 @@ def register():
     return render_template("home/register.html", form=form)
 
 
+# 收藏音乐
+@home.route("/like/")
+def like():
+    conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
+    musicd = int(request.args.get('id'))
+    print(musicd)
+    user_id = session.get('user_id')
+    cursor = conn.cursor()
+    sql = "SELECT music_id FROM library WHERE id = '%s' " % user_id
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    print(results)
+    for rol in results:
+        if musicd == rol[0]:
+            flash("您已经收藏过此歌曲o(∩_∩)o")
+            return render_template("home/msg.html", name=session.get('user'))
+    library = Library(
+        id=session.get('user_id'),
+        music_id=musicd
+    )
+    db.session.add(library)
+    db.session.commit()
+    flash("收藏成功！已经添加到“我喜欢的音乐”当中")
+    return render_template("home/msg.html", name=session.get('user'))
+
+
 # 购买
 @home.route("/buy")
 def buy():
+    conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
     musicd = int(request.args.get('id'))
     user_id = session.get('user_id')
     cursor = conn.cursor()
     sql = "SELECT music_id FROM buy WHERE id = '%s' " % user_id
     cursor.execute(sql)
     results = cursor.fetchall()
-    print(results)
     sql = "SELECT free FROM music WHERE music_id = '%s' " % musicd
     cursor.execute(sql)
     results0 = cursor.fetchall()
-    print(results0[0])
     for k in results0:
         if 1 == k[0]:
             flash("此歌曲为免费歌曲，无需购买")

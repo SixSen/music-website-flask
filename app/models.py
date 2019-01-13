@@ -71,7 +71,7 @@ class Library(db.Model):
     __tablename__ = 'library'
     library_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)  # library主键
     id = db.Column(db.Integer, nullable=False)  # 收藏用户id
-    list_id = db.Column(db.Integer, nullable=False)  # 收藏歌单id
+    music_id = db.Column(db.Integer, nullable=False)  # 收藏歌单id
 
     # librarys = db.relationship('')
 
