@@ -13,6 +13,8 @@ views是主要的路由文件
 # pymysql的数据库连接
 # conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
 conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
+
+
 # @ home = Blueprint("home",__name__)
 
 
@@ -35,6 +37,77 @@ def welcome():
     )
     return render_template("home/welcome.html", name=session.get('user'), vclass=session.get('vclass'),
                            page_data=page_data)
+
+
+# 音乐库——风格排行榜
+@home.route("/fav/")
+def fav():
+    page_data = Music.query.filter(
+        Music.style == 'Pop'
+    ).order_by(
+        Music.listen.desc()
+    )
+    return render_template("home/fav.html", name=session.get('user'), page_data=page_data)
+
+
+@home.route("/mybuy/")
+def mybuy():
+    page_data = Music.query.filter(
+        Music.style == 'Pop'
+    ).order_by(
+        Music.listen.desc()
+    )
+    return render_template("home/mybuy.html", name=session.get('user'), page_data=page_data)
+
+
+@home.route("/pop/")
+def pop():
+    page_data = Music.query.filter(
+        Music.style == 'Pop'
+    ).order_by(
+        Music.listen.desc()
+    )
+    return render_template("home/pop.html", name=session.get('user'), page_data=page_data)
+
+
+@home.route("/jazz/")
+def jazz():
+    page_data = Music.query.filter(
+        Music.style == 'Jazz'
+    ).order_by(
+        Music.listen.desc()
+    )
+    return render_template("home/jazz.html", name=session.get('user'), page_data=page_data)
+
+
+@home.route("/rb/")
+def rb():
+    page_data = Music.query.filter(
+        Music.style == 'R&B'
+    ).order_by(
+        Music.listen.desc()
+    )
+    return render_template("home/rb.html", name=session.get('user'), page_data=page_data)
+
+
+@home.route("/cla/")
+def cla():
+    page_data = Music.query.filter(
+        Music.style == 'classical'
+    ).order_by(
+        Music.listen.desc()
+    )
+    return render_template("home/cla.html", name=session.get('user'), page_data=page_data)
+
+
+@home.route("/folk/")
+def folk():
+    page_data = Music.query.filter(
+        Music.style == 'Folk'
+    ).order_by(
+        Music.listen.desc()
+    )
+    return render_template("home/folk.html", name=session.get('user'), page_data=page_data)
 
 
 # 登录
@@ -189,7 +262,7 @@ def wallet():
             return redirect(url_for('home.wallet'))
         else:
             uss = userm.wallet
-            uss = uss+money
+            uss = uss + money
             userm.wallet = uss
             db.session.add(userm)
             db.session.commit()
@@ -231,7 +304,12 @@ def play():
             flash('请先购买此歌曲或订阅会员-err:%d' % musicid)
             return render_template("home/msg.html", name=session.get('user'))
     else:
-        return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicid)
+        music = Music.query.filter(
+            Music.music_id == musicid
+        ).first()
+        add = music.address
+        return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicid,
+                               add=add)
 
 
 # 注册
@@ -320,10 +398,3 @@ def search():
     # results = cursor.fetchall()
     # print(results)
     return render_template("home/search.html", name=session.get('user'), key=key, count=count, page_data=page_data)
-
-
-# 音乐库——已购买歌曲
-@home.route("/mybuy/")
-def mybuy():
-    return render_template("home/buy.html", name=session.get('user'))
-

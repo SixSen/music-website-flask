@@ -107,6 +107,7 @@ class Board(db.Model):
     board_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
     music_id = db.Column(db.Integer, nullable=False)
     music_name = db.Column(db.String(100), nullable=False)
+    # music_names = db.relationship("music", backref='board')
 
 
 class Admin(db.Model):

@@ -5,10 +5,10 @@
 {% endblock %}
 
 {% block content %}
-    <h1>用户id：{{ user }}————播放了music_id为{{ id }}的歌曲</h1>
-    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86
-            src="//music.163.com/outchain/player?type=2&id=411356221&auto=1&height=66"></iframe>
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=530 height=86
+            src="//music.163.com/outchain/player?type=2&id={{ add }}&auto=1&height=66"></iframe>
     <br>
+    <h4>用户id：{{ name }}——会话id：{{ user }}————播放了music_id为{{ id }}的歌曲</h4>
     <a href="javascript:history.back(-1);" class="btn btn-primary"
        target="_blank" role="button"><span class="glyphicon glyphicon-menu-left"></span>&nbsp;返回</a>
 {% endblock %}
