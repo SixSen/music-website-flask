@@ -9,9 +9,10 @@
     <title>微音乐</title>
     <link rel="shortcut icon" href="{{ url_for('static',filename='base/images/logo.png') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='base/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static',filename='base/css/bootstrap-music.css') }}">
+    {#    <link rel="stylesheet" href="{{ url_for('static',filename='base/css/bootstrap-movie.css') }}">#}
     <link rel="stylesheet" href="{{ url_for('static',filename='base/css/animate.css') }}">
     <img src="{{ url_for('static',filename='base/images/logo.png') }}" style="height:30px;" alt="logo">
+
 
     <script src="{{ url_for('static',filename='base/js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static',filename='base/js/bootstrap.min.js') }}"></script>
@@ -37,6 +38,7 @@
 
 <body>
 <!--导航-->
+<script src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <!--小屏幕导航按钮和logo-->
@@ -47,7 +49,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a href="{{ url_for('home.welcome') }}" class="navbar-brand" style="width:250px;">
-                <img src="" alt="">&nbsp;微音乐
+                &nbsp;微音乐
             </a>
         </div>
         <!--小屏幕导航按钮和logo-->
@@ -63,11 +65,11 @@
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a class="curlink" href="{{ url_for('home.fav') }}"><span
+                    <a class="curlink" href="{{ url_for('home.pop') }}"><span
                             class="glyphicon glyphicon-headphones"></span>&nbsp;音乐库</a>
                 </li>
                 <li>
-                    <a class="curlink" href="{{ url_for('home.user') }}"><span class="glyphicon glyphicon-user"></span>&nbsp;ID:
+                    <a class="curlink" href="{{ url_for('home.fav') }}"><span class="glyphicon glyphicon-user"></span>&nbsp;ID:
                         {% block username %}
                         {% endblock %}</a>
                 </li>
@@ -76,7 +78,7 @@
                             class="glyphicon glyphicon-log-out"></span>&nbsp;退出</a>
                 </li>
                 <li>
-                    <a class="curlink" href="{{ url_for('home.sub') }}"><span class="glyphicon glyphicon-cog"></span>&nbsp;个人中心</a>
+                    <a class="curlink" href="{{ url_for('home.user') }}"><span class="glyphicon glyphicon-cog"></span>&nbsp;个人中心</a>
                 </li>
             </ul>
         </div>
@@ -94,8 +96,9 @@
 <footer>
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" style="text-align: center">
                 <p>
+                    <br>
                 <hr>
                 16070641&nbsp;数据库课程设计.音乐库管理系统&nbsp;基于Flask与MySQL数据库
                 </p>
@@ -105,11 +108,7 @@
 </footer>
 <!--底部-->
 {#<script src="//cdn.bootcss.com/holder/2.9.4/holder.min.js"></script>#}
-<script src="{{ url_for('static',filename='base/js/jquery.min.js') }}"></script>
-<script src="{{ url_for('static',filename='base/js/bootstrap.min.js') }}"></script>
-<script src="{{ url_for('static',filename='base/js/jquery.singlePageNav.min.js') }}"></script>
-<script src="{{ url_for('static',filename='base/js/wow.min.js') }}"></script>
-<script src="{{ url_for('static',filename='lazyload/jquery.lazyload.min.js') }}"></script>
+
 <script>
     $(function () {
         new WOW().init();

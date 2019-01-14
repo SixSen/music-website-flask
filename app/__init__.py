@@ -1,5 +1,3 @@
-from flask import Flask
-# 从前台，后台模块中导入我们的蓝图对象
 import os
 # from config.base_config import SQLALCHEMY_DATABASE_URI
 

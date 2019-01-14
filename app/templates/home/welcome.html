@@ -7,7 +7,7 @@
 {% block content %}
     <h1>
         {% if vclass == 1 %}
-            <span class="glyphicon glyphicon-certificate" style="color: rgb(231,190,102)"></span>&nbsp;尊敬的VIP会员
+            <span class="glyphicon glyphicon-cd" style="color: rgb(240,173,78)"></span>&nbsp;尊敬的VIP会员
         {% endif %}{{ name }}，欢迎回来
     </h1>
     <br>
@@ -26,21 +26,23 @@
                                 <div class="text-left"
                                      style=" margin-left:auto; margin-right:auto; width: 200px; margin-bottom: 10px ; margin-top:15px">
                                     <h4>
-                                        <span style="color: rgba(30,30,30,0.99);font-style: italic;">
+                                        <span style="color: rgba(30,30,30,0.99);font-style: italic; ">
                                         {{ v.board_id }} . {{ v.music_name }}
                                     </span>
                                     </h4>
-
                                 </div>
-                                <a href="{{ url_for('home.play',id=v.music_id) }}" class="btn btn-primary"
+                                <div class="btn-group">
+                                    <a href="{{ url_for('home.play',id=v.music_id) }}" class="btn btn-success"
                                    style="height:30px"
                                    role="button"><span class="glyphicon glyphicon-play" style=""></span>&nbsp;播放</a>
-                                <a href="{{ url_for('home.like',id=v.music_id) }}" class="btn btn-primary"
+                                <a href="{{ url_for('home.like',id=v.music_id) }}" class="btn btn-default btn-sm "
                                    style="height:30px"
                                    role="button"><span class="glyphicon glyphicon-star"></span>&nbsp;收藏</a>
-                                <a href="{{ url_for('home.buy',id=v.music_id) }}" class="btn btn-primary"
+                                <a href="{{ url_for('home.buy',id=v.music_id) }}" class="btn btn-default btn-sm"
                                    style="height:30px"
                                    role="button"><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;购买</a>
+                                </div>
+
                             </div>
                         </div>
                     {% endfor %}

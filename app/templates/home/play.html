@@ -5,10 +5,14 @@
 {% endblock %}
 
 {% block content %}
-    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=530 height=86
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width=530 height=86
             src="//music.163.com/outchain/player?type=2&id={{ add }}&auto=1&height=66"></iframe>
     <br>
-    <h4>用户id：{{ name }}——会话id：{{ user }}————播放了music_id为{{ id }}的歌曲</h4>
-    <a href="javascript:history.back(-1);" class="btn btn-primary"
+    <h5>&nbsp;&nbsp;&nbsp;用户id：{{ name }}——会话id：{{ user }}————播放了music_id为{{ id }}的歌曲:{{ music_name }}</h5>
+    <div class="btn-group-lg">&nbsp;
+    <a href="javascript:history.back(-1);" class="btn btn-success"
        target="_blank" role="button"><span class="glyphicon glyphicon-menu-left"></span>&nbsp;返回</a>
+    <a href="{{ url_for('home.download',id=id) }}" class="btn btn-default" role="button">
+        <span class="glyphicon glyphicon-download"></span>&nbsp;下载</a>
 {% endblock %}
+</div>
