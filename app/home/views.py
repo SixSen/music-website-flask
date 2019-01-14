@@ -306,7 +306,7 @@ def play():
     conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
     # conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
     if session.get('user') is None:
-        flash("请先登录才能播放音乐", "err")
+        flash("请先登录才继续接下来的操作", "err")
         return redirect(url_for('home.login'))
     cursor = conn.cursor()
     musicid = int(request.args.get('id'))

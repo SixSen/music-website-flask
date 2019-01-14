@@ -27,10 +27,10 @@
                                     <a href="{{ url_for('home.play',id=v.music_id) }}" class="btn btn-success"
                                    style="height:30px"
                                    role="button"><span class="glyphicon glyphicon-play" style=""></span>&nbsp;播放</a>
-                                <a href="{{ url_for('home.like',id=v.music_id) }}" class="btn btn-default btn-sm "
+                                <a href="{{ url_for('home.play',id=v.music_id) }}" class="btn btn-default btn-sm "
                                    style="height:30px"
                                    role="button"><span class="glyphicon glyphicon-star"></span>&nbsp;收藏</a>
-                                <a href="{{ url_for('home.buy',id=v.music_id) }}" class="btn btn-default btn-sm"
+                                <a href="{{ url_for('home.play',id=v.music_id) }}" class="btn btn-default btn-sm"
                                    style="height:30px"
                                    role="button"><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;购买</a>
                                 </div>
