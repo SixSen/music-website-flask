@@ -8,13 +8,13 @@
 {% block content %}
 
     <ul class="nav nav-tabs">
-        <li><a href="{{ url_for('home.fav')}}">我喜欢的音乐</a></li>
-        <li><a href="{{ url_for('home.mybuy')}}">已购买</a></li>
-        <li><a href="{{ url_for('home.pop')}}">Pop榜</a></li>
-        <li class="active"><a href="{{ url_for('home.jazz')}}">Jazz榜</a></li>
-        <li><a href="{{ url_for('home.rb')}}">R&B榜</a></li>
-        <li><a href="{{ url_for('home.cla')}}">Classical榜</a></li>
-        <li><a href="{{ url_for('home.folk')}}">Folk榜</a></li>
+        <li><a href="{{ url_for('home.fav') }}">我喜欢的音乐</a></li>
+        <li><a href="{{ url_for('home.mybuy') }}">已购买</a></li>
+        <li><a href="{{ url_for('home.pop') }}">Pop榜</a></li>
+        <li class="active"><a href="{{ url_for('home.jazz') }}">Jazz榜</a></li>
+        <li><a href="{{ url_for('home.rb') }}">R&B榜</a></li>
+        <li><a href="{{ url_for('home.cla') }}">Classical榜</a></li>
+        <li><a href="{{ url_for('home.folk') }}">Folk榜</a></li>
     </ul>
 
 
@@ -23,7 +23,7 @@
             <div class="media">
                 <div class="media-left" style="width: 5000px;margin-right: 400px">
                     {#                    <a href="{{ url_for('home.play',id=v.music_id) }}">#}
-                    <h4>{{ v.music_name }}</h4>
+                    <h4>{{ loop.index }}-{{ v.music_name }}</h4>
                     {#                    </a>#}
                 </div>
                 <div class="media-body" style="margin-left: auto">
@@ -33,9 +33,13 @@
                     <h5 class="media-heading">播放次数：{{ v.listen }}<a href="{{ url_for('home.like',id=v.music_id) }}"
                                                                     class="label label-primary pull-right"><span
                             class="glyphicon glyphicon-star"></span>&nbsp;收藏音乐</a></h5>
-                    <h5 class="media-heading">歌曲风格：{{ v.style }}<a href="{{ url_for('home.buy',id=v.music_id) }}"
-                                                                   class="label label-primary pull-right"><span
-                            class="glyphicon glyphicon-shopping-cart"></span>&nbsp;购买音乐</a></h5>
+                    <h5 class="media-heading">歌曲风格：{{ v.style }}
+                        {% if v.free == 0 %}
+                            <a href="{{ url_for('home.buy',id=v.music_id) }}"
+                               class="label label-primary pull-right"><span
+                                    class="glyphicon glyphicon-shopping-cart"></span>&nbsp;购买音乐</a></h5>
+                        {% endif %}
+                    </h5>
 
                 </div>
             </div>

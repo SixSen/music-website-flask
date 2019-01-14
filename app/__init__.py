@@ -17,7 +17,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:1232123@127.0.0.1:3306/mus
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:nucoj@39.106.214.230:3306/musicdb"
 app.debug = True
-app.secret_key = "sixsense"
+# Secret_key用于密码加盐与
+app.secret_key = "Sixsense1212qwqwasas"
+
 app.config["UP_DIR"] = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static/uploads/")
 app.config["FC_DIR"] = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static/uploads/users/")
 db = SQLAlchemy(app)
@@ -27,6 +29,7 @@ from app.admin import admin as admin_blueprint
 # 第一个参数是蓝图，第二个参数是url地址的前缀。通过地址前缀划分前后台的路由
 app.register_blueprint(home_blueprint)
 app.register_blueprint(admin_blueprint, url_prefix="/admin")
+
 
 @app.errorhandler(404)
 def page_not_found(error):

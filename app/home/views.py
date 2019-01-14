@@ -26,7 +26,7 @@ def index():
     return render_template("home/index.html", page_data=page_data)
 
 
-# 登陆后的欢迎主页
+# 欢迎主页
 @home.route("/welcome/")
 def welcome():
     page_data = Board.query.filter(
@@ -90,7 +90,7 @@ def pop():
         Music.style == 'Pop'
     ).order_by(
         Music.listen.desc()
-    )
+    ).limit(10)
     return render_template("home/pop.html", name=session.get('user'), page_data=page_data)
 
 
@@ -142,7 +142,7 @@ def login():
         data = form.data
         user = User.query.filter_by(name=data["name"]).first()
         if user:
-            if not user.check_pwd(data["pwd"]):
+            if not user.check_pwd(data["pwd"]): # 密码采用pbkdf2:sha256方式加密-所以要用这种方案判断密码
                 flash("密码错误！", "err")
                 return redirect(url_for("home.login"))
         else:
@@ -320,7 +320,19 @@ def play():
             if musicid == rol[0]:
                 isbuy = 1
         if isbuy == 1:
-            return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicid)
+            music = Music.query.filter(
+                Music.music_id == musicid
+            ).first()
+            add = music.address
+            pla = music.listen
+            print(pla)
+            pla = pla + 1
+            music.listen = pla
+            print(music.listen)
+            db.session.add(music)
+            db.session.commit()
+            return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicid,
+                                   add=add)
         else:
             flash('请先购买此歌曲或订阅会员-err:%d' % musicid)
             return render_template("home/msg.html", name=session.get('user'))
@@ -329,6 +341,13 @@ def play():
             Music.music_id == musicid
         ).first()
         add = music.address
+        pla = music.listen
+        print(pla)
+        pla = pla + 1
+        music.listen = pla
+        print(music.listen)
+        db.session.add(music)
+        db.session.commit()
         return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicid,
                                add=add)
 
