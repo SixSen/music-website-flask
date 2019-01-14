@@ -32,7 +32,7 @@
                         <div class="form-group">
                             <label for="input_money"><span
                                     class="glyphicon glyphicon-yen"></span>&nbsp;{{ form.money.label }}
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前余额为：{{ money }}元
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前余额为：{{ money| round(2, 'floor') }}元
                             </label>
                             {{ form.money }}
                             {% for err in form.money.errors %}

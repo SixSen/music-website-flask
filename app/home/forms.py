@@ -205,7 +205,8 @@ class WalletForm(FlaskForm):
     money = StringField(
         label="充值金额",
         validators=[
-            DataRequired("充值金额不能为空！")
+            DataRequired("充值金额不能为空！"),
+            # Regexp("d", message="金额格式不正确！")
         ],
         description="充值金额",
         render_kw={

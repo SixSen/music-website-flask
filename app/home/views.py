@@ -10,6 +10,8 @@ import datetime
 '''
 views是主要的路由文件
 '''
+
+
 # pymysql的数据库连接
 # conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
 
@@ -48,7 +50,7 @@ def fav():
     musicd = []
     for rol in results:
         musicd.append(rol[0])
-    page_data =[]
+    page_data = []
     for fid in musicd:
         data = Music.query.filter(
             Music.music_id == fid
@@ -58,6 +60,7 @@ def fav():
         # print(fid)
         page_data += data
     # print(page_data)
+    page_data.reverse()
     return render_template("home/fav.html", name=session.get('user'), page_data=page_data)
 
 
@@ -71,7 +74,7 @@ def mybuy():
     musicd = []
     for rol in results:
         musicd.append(rol[0])
-    page_data =[]
+    page_data = []
     for bid in musicd:
         data = Music.query.filter(
             Music.music_id == bid
@@ -81,6 +84,7 @@ def mybuy():
         # print(bid)
         page_data += data
     # print(page_data)
+    page_data.reverse()
     return render_template("home/mybuy.html", name=session.get('user'), page_data=page_data)
 
 
@@ -100,7 +104,7 @@ def jazz():
         Music.style == 'Jazz'
     ).order_by(
         Music.listen.desc()
-    )
+    ).limit(10)
     return render_template("home/jazz.html", name=session.get('user'), page_data=page_data)
 
 
@@ -110,7 +114,7 @@ def rb():
         Music.style == 'R&B'
     ).order_by(
         Music.listen.desc()
-    )
+    ).limit(10)
     return render_template("home/rb.html", name=session.get('user'), page_data=page_data)
 
 
@@ -120,7 +124,7 @@ def cla():
         Music.style == 'classical'
     ).order_by(
         Music.listen.desc()
-    )
+    ).limit(10)
     return render_template("home/cla.html", name=session.get('user'), page_data=page_data)
 
 
@@ -130,7 +134,7 @@ def folk():
         Music.style == 'Folk'
     ).order_by(
         Music.listen.desc()
-    )
+    ).limit(10)
     return render_template("home/folk.html", name=session.get('user'), page_data=page_data)
 
 
@@ -142,7 +146,7 @@ def login():
         data = form.data
         user = User.query.filter_by(name=data["name"]).first()
         if user:
-            if not user.check_pwd(data["pwd"]): # 密码采用pbkdf2:sha256方式加密-所以要用这种方案判断密码
+            if not user.check_pwd(data["pwd"]):  # 密码采用pbkdf2:sha256方式加密-所以要用这种方案判断密码
                 flash("密码错误！", "err")
                 return redirect(url_for("home.login"))
         else:
@@ -396,17 +400,17 @@ def like():
     return render_template("home/msg.html", name=session.get('user'))
 
 
-# 收藏音乐
+# 取消收藏
 @home.route("/del_like/")
 def del_like():
     # conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
     musicd = int(request.args.get('id'))
-    library = Library.query.filter(Library.id == session.get('user_id'),Library.music_id == musicd).first()
+    library = Library.query.filter(Library.id == session.get('user_id'), Library.music_id == musicd).first()
     print(musicd)
     db.session.delete(library)
     db.session.commit()
-    flash("已经取消收藏啦:-D")
-    return render_template("home/msg.html", name=session.get('user'))
+    flash("已经取消收藏啦:-D", "ok")
+    return redirect(url_for('home.fav'))
 
 
 # 购买
@@ -458,6 +462,14 @@ def buy():
 @home.route("/search")
 def search():
     key = request.args.get('key')
+    # kee为防止SQL注入设置的过滤用字符串
+    kee = key.replace('%', '`')
+    if kee != key:
+        key = ""
+
+    if key == "":
+        return redirect(url_for('home.welcome'))
+
     count = Music.query.filter(
         Music.music_name.ilike('%' + key + '%')
     ).count()

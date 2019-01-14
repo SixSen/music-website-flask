@@ -47,7 +47,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a href="{{ url_for('home.welcome') }}" class="navbar-brand" style="width:250px;">
-                &nbsp;微音乐
+                <img src="" alt="">&nbsp;微音乐
             </a>
         </div>
         <!--小屏幕导航按钮和logo-->
@@ -124,7 +124,12 @@
             var key = $("#key_music").val();
             location.href = "{{ url_for('home.search')}}?key=" + key
         });
+        $("#do_search").keydown(function () {
+            var key = $("#key_music").val();
+            location.href = "{{ url_for('home.search')}}?key=" + key
+        });
     });
+
 
 </script>
 <script src="https://cdn.bootcss.com/holder/2.9.4/holder.min.js"></script>
