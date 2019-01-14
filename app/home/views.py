@@ -396,6 +396,19 @@ def like():
     return render_template("home/msg.html", name=session.get('user'))
 
 
+# 收藏音乐
+@home.route("/del_like/")
+def del_like():
+    # conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
+    musicd = int(request.args.get('id'))
+    library = Library.query.filter(Library.id == session.get('user_id'),Library.music_id == musicd).first()
+    print(musicd)
+    db.session.delete(library)
+    db.session.commit()
+    flash("已经取消收藏啦:-D")
+    return render_template("home/msg.html", name=session.get('user'))
+
+
 # 购买
 @home.route("/buy")
 def buy():
