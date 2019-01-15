@@ -39,7 +39,7 @@
             <div class="form-group has-feedback">
                 {#                <input name="user" type="text" class="form-control" placeholder="请输入账号！">#}
                 {{ form.account }}
-                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
                 {% for err in form.account.errors %}
                     <div class="col-md-12">
                         <p style="color: red">{{ err }}</p>

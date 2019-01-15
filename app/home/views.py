@@ -1,4 +1,4 @@
-from flask import render_template, redirect, flash, url_for, session, request
+from flask import render_template, redirect, flash, url_for, session, request, abort
 from werkzeug.security import generate_password_hash
 from . import home
 from app.home.forms import LoginForm, RegisterForm, UserdetailForm, PwdForm, WalletForm
@@ -21,20 +21,34 @@ views是主要的路由文件
 # 根路由
 @home.route("/")
 def index():
-    page_data = Board.query.filter(
+    page_data = []
+    board = Board.query.filter(
     ).order_by(
         Board.board_id
     )
+    for v in board:
+        data = Music.query.filter(
+            Music.music_id == v.music_id
+        ).limit(1)
+        page_data += data
     return render_template("home/index.html", page_data=page_data)
 
 
 # 欢迎主页
 @home.route("/welcome/")
 def welcome():
-    page_data = Board.query.filter(
+    if not "user" in session:
+        return abort(404)
+    page_data = []
+    board = Board.query.filter(
     ).order_by(
         Board.board_id
     )
+    for v in board:
+        data = Music.query.filter(
+            Music.music_id == v.music_id
+        ).limit(1)
+        page_data += data
     return render_template("home/welcome.html", name=session.get('user'), vclass=session.get('vclass'),
                            page_data=page_data)
 
@@ -42,6 +56,8 @@ def welcome():
 # 音乐库
 @home.route("/fav/")
 def fav():
+    if not "user" in session:
+        return abort(404)
     conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
     # conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
     cursor = conn.cursor()
@@ -55,8 +71,6 @@ def fav():
     for fid in musicd:
         data = Music.query.filter(
             Music.music_id == fid
-        ).order_by(
-            Music.listen.desc()
         )
         # print(fid)
         page_data += data
@@ -67,6 +81,8 @@ def fav():
 
 @home.route("/mybuy/")
 def mybuy():
+    if not "user" in session:
+        return abort(404)
     conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
     # conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
     cursor = conn.cursor()
@@ -80,8 +96,6 @@ def mybuy():
     for bid in musicd:
         data = Music.query.filter(
             Music.music_id == bid
-        ).order_by(
-            Music.listen.desc()
         )
         # print(bid)
         page_data += data
@@ -183,6 +197,8 @@ def out():
 @home.route("/user/", methods=["GET", "POST"])
 # @user_login_req
 def user():
+    if not "user" in session:
+        return abort(404)
     form = UserdetailForm()
     user = User.query.get(int(session["user_id"]))
     if request.method == "GET":
@@ -219,6 +235,8 @@ def user():
 # 个人中心——密码修改
 @home.route("/pwd/", methods=["GET", "POST"])
 def pwd():
+    if not "user" in session:
+        return abort(404)
     form = PwdForm()
     if form.validate_on_submit():
         data = form.data
@@ -237,6 +255,8 @@ def pwd():
 # 个人中心——订阅会员
 @home.route("/sub/", methods=["GET", "POST"])
 def sub():
+    if not "user" in session:
+        return abort(404)
     form = PwdForm()
     if form.validate_on_submit():
         data = form.data
@@ -281,6 +301,8 @@ def getsub():
 # 个人中心——充值钱包
 @home.route("/wallet/", methods=["GET", "POST"])
 def wallet():
+    if not "user" in session:
+        return abort(404)
     userm = User.query.filter_by(name=session["user"]).first()
     form = WalletForm()
     if form.validate_on_submit():
@@ -356,7 +378,7 @@ def play():
         db.session.add(music)
         db.session.commit()
         return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicid,
-                               add=add, music_name=music.music_name)
+                               add=add, music_name=music)
 
 
 # 下载音乐
@@ -396,6 +418,8 @@ def register():
 # 收藏音乐
 @home.route("/like/")
 def like():
+    if not "user" in session:
+        return abort(404)
     conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
     # conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
     musicd = int(request.args.get('id'))

@@ -29,3 +29,8 @@ def index():
 def manage():
     admin_id = session.get("admin_id")
     return render_template("admin/index.html", id=admin_id)
+
+@admin.route("/all/")
+def all():
+    admin_id = session.get("admin_id")
+    return render_template("admin/all.html", id=admin_id)

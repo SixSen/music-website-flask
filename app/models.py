@@ -12,7 +12,7 @@ app = Flask(__name__)
 # 用于连接数据的数据库。
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:1232123@127.0.0.1:3306/musicdb"
 
-#app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:nucoj@39.106.214.230:3306/musicdb"
+# app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:nucoj@39.106.214.230:3306/musicdb"
 # Flask-SQLAlchemy 将会追踪对象的修改并且发送信号。
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -54,7 +54,7 @@ class Music(db.Model):
     free = db.Column(db.Integer, nullable=False)  # 是否免费
     address = db.Column(db.String(100), nullable=True)  # 歌曲地址
 
-    # music = db.relationship('Library', backref='music_id')
+    # music = db.relationship('Library', backref="music")
 
     # def __repr__(self):
     #     return '<User %r>' % self.name
@@ -106,7 +106,7 @@ class Board(db.Model):
     __tablename__ = 'board'
     board_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
     music_id = db.Column(db.Integer, nullable=False)
-    music_name = db.Column(db.String(100), nullable=False)
+    # music_name = db.Column(db.String(100), nullable=False)
     # music_names = db.relationship("music", backref='board')
 
 
