@@ -31,7 +31,12 @@
                 </thead>
                 <tbody>
                 {% for v in form %}
-                    <tr class="warning">
+
+                     {% if v.vclass == 1 %}
+                            <tr class="warning">
+                        {% else %}
+                            <tr class="">
+                        {% endif %}
                         <td>{{ v.id }}</td>
                         <td>{{ v.name }}</td>
                         <td>{{ v.email }}</td>
