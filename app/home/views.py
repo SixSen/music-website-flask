@@ -361,7 +361,7 @@ def play():
             db.session.add(music)
             db.session.commit()
             return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicid,
-                                   add=add)
+                                   add=add, mus=music)
         else:
             flash('请先购买此歌曲或订阅会员-err:%d' % musicid)
             return render_template("home/msg.html", name=session.get('user'))
@@ -377,8 +377,9 @@ def play():
         # print(music.listen)
         db.session.add(music)
         db.session.commit()
+        print(music)
         return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicid,
-                               add=add, music_name=music)
+                               add=add, mus=music)
 
 
 # 下载音乐

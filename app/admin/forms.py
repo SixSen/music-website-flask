@@ -49,3 +49,13 @@ class LoginForm(FlaskForm):
         admin = Admin.query.filter_by(admin_id=account).count()
         if admin == 0:
             raise ValidationError("账号不存在! ")
+
+
+
+class AuthorForm(FlaskForm):
+    author = StringField('歌手', validators=[DataRequired()])
+    music = StringField('歌曲', validators=[DataRequired()])
+    style = StringField('风格', validators=[DataRequired()])
+    free = StringField('免费', validators=[DataRequired()])
+    address = StringField('地址', validators=[DataRequired()])
+    submit = SubmitField('添加')
