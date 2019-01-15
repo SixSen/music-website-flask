@@ -36,7 +36,7 @@
                                 class="glyphicon glyphicon-star-empty"></span>&nbsp;取消收藏</a></h5>
                         <h5 class="media-heading">歌曲风格：{{ v.style }}
                             {% if v.free == 0 %}
-                                <a href="{{ url_for('home.buy',id=v.music_id) }}"
+                                <a href="{{ url_for('home.buy', id=v.music_id) }}"
                                    class="label label-primary pull-right"><span
                                         class="glyphicon glyphicon-shopping-cart"></span>&nbsp;购买音乐</a></h5>
                             {% endif %}

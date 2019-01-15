@@ -112,7 +112,7 @@ class Board(db.Model):
 
 class Admin(db.Model):
     __tablename__ = 'admin'
-    admin_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)  # 管理员账号
+    admin_id = db.Column(db.String(10), primary_key=True, nullable=False, unique=True)  # 管理员账号
     admin_pwd = db.Column(db.String(100), nullable=False)  # 管理员密码
 
     # def __repr__(self):
