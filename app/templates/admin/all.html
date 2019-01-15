@@ -1,11 +1,42 @@
 {% extends "admin/home.html" %}
 {% block name %}
-   管理员： {{ name }}
+    管理员： {{ id }}
 {% endblock %}
 
 {% block content %}
     {% include "admin/menu.html" %}
-Help！
+    <div>
+        <div style="width: auto">
+            <body>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>用户id</th>
+                    <th>用户名</th>
+                    <th>用户邮箱</th>
+                    <th>用户电话</th>
+                    <th>用户等级</th>
+                    <th>账户余额</th>
+                    <th>会员有效期</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for v in form %}
+                    <tr class="warning">
+                    <td>{{ v.id }}</td>
+                        <td>{{ v.name }}</td>
+                        <td>{{ v.email }}</td>
+                        <td>{{ v.phone }}</td>
+                        <td>{{ v.vclass }}</td>
+                        <td>{{ v.wallet }}</td>
+                        <td>{{ v.end }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            </body>
+        </div>
+    </div>
+    </div>
 {% endblock %}
 
 {% block js %}

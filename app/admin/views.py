@@ -1,8 +1,7 @@
 # 从模块的初始化文件中导入蓝图。
 from flask import Blueprint, render_template, redirect, flash, url_for, session, request, Response
 from . import admin
-from app.models import Admin, Music
-from app import db, app
+from app.models import User, Music, Board, Buy, db, Library
 from flask import render_template, redirect, url_for, flash, session, request
 from app.admin.forms import LoginForm
 
@@ -32,5 +31,7 @@ def manage():
 
 @admin.route("/all/")
 def all():
+    form = User.query.all()
+    print(form)
     admin_id = session.get("admin_id")
-    return render_template("admin/all.html", id=admin_id)
+    return render_template("admin/all.html", id=admin_id ,form = form)
