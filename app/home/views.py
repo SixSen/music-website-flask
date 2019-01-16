@@ -170,6 +170,10 @@ def login():
             return redirect(url_for("home.login"))
 
         vclass = user.get_vclass()
+        if vclass < 0:
+            flash("账户已经被注销，请联系管理员处理！", "err")
+            return redirect(url_for("home.login"))
+
         session["user"] = user.name
         session["user_id"] = user.id
         session["vclass"] = vclass

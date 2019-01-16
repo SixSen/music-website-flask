@@ -48,7 +48,8 @@ def deuser():
     admin_id = session.get("admin_id")
     user = User.query.filter(User.id==uid).first()
     # print(musicd)
-    db.session.delete(user)
+    user.vclass = -1
+    db.session.add(user)
     db.session.commit()
     flash("已经成功注销id为%d的用户" % uid, "ok")
     return redirect(url_for('admin.all'))

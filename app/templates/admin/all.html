@@ -23,7 +23,7 @@
                     <th>用户名</th>
                     <th>用户邮箱</th>
                     <th>用户电话</th>
-                    <th>用户等级</th>
+                    <th>用户状态</th>
                     <th>账户余额</th>
                     <th>会员截止时间</th>
                     <th>注销账户</th>
@@ -32,26 +32,34 @@
                 <tbody>
                 {% for v in form %}
 
-                     {% if v.vclass == 1 %}
-                            <tr class="warning">
-                        {% else %}
-                            <tr class="">
-                        {% endif %}
-                        <td>{{ v.id }}</td>
-                        <td>{{ v.name }}</td>
-                        <td>{{ v.email }}</td>
-                        <td>{{ v.phone }}</td>
-                        <td>{{ v.vclass }}</td>
-                        <td>{{ v.wallet }}</td>
-                        {% if v.vclass == 1 %}
-                            <td>{{ v.end }}</td>
-                        {% else %}
-                            <td>- - -</td>
-                        {% endif %}
+                    {% if v.vclass == 1 %}
+                        <tr class="warning">
+                            {% elif v.vclass == -1 %}
+                        <tr class="danger">
+                            {% else %}
+                        <tr class="">
+                    {% endif %}
+                <td>{{ v.id }}</td>
+                <td>{{ v.name }}</td>
+                <td>{{ v.email }}</td>
+                <td>{{ v.phone }}</td>
+                {% if v.vclass == 1 %}
+                    <td>订阅会员</td>
+                    {% elif v.vclass < 0 %}
+                    <td>已经注销</td>
+                {% else %}
+                    <td> - </td>
+                {% endif %}
+                <td>{{ v.wallet }}</td>
+                {% if v.vclass == 1 %}
+                    <td>{{ v.end }}</td>
+                {% else %}
+                    <td>- - -</td>
+                {% endif %}
 
-                        <td><a target="_self" href="{{ url_for('admin.deuser',id=v.id) }}"
-                               style="color: red">&nbsp;删除</a></td>
-                    </tr>
+                <td><a target="_self" href="{{ url_for('admin.deuser',id=v.id) }}"
+                       style="color: red">&nbsp;注销</a></td>
+                </tr>
                 {% endfor %}
             </table>
             </body>

@@ -53,9 +53,9 @@ class LoginForm(FlaskForm):
 
 
 class AuthorForm(FlaskForm):
-    author = StringField('歌手', validators=[DataRequired()])
-    music = StringField('歌曲', validators=[DataRequired()])
-    style = StringField('风格', validators=[DataRequired()])
-    free = StringField('免费', validators=[DataRequired()])
-    address = StringField('地址', validators=[DataRequired()])
-    submit = SubmitField('添加')
+    author = StringField('歌手：', validators=[DataRequired()])
+    music = StringField('歌曲：', validators=[DataRequired()])
+    style = StringField('风格：', validators=[DataRequired()])
+    free = StringField('免费：', validators=[DataRequired()])
+    address = StringField('地址：', validators=[DataRequired()])
+    submit = SubmitField('添加歌曲')
