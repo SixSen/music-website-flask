@@ -35,7 +35,7 @@ def all():
     if not "admin_id" in session:
         return abort(403)
     form = User.query.all()
-    print(form)
+    # print(form)
     admin_id = session.get("admin_id")
     return render_template("admin/all.html", id=admin_id ,form = form)
 
