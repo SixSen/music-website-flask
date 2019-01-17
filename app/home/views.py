@@ -37,7 +37,7 @@ def index():
 # 欢迎主页
 @home.route("/welcome/")
 def welcome():
-    if not "user" in session:
+    if "user" not in session:
         return abort(404)
     page_data = []
     board = Board.query.filter(
@@ -56,7 +56,7 @@ def welcome():
 # 音乐库
 @home.route("/fav/")
 def fav():
-    if not "user" in session:
+    if "user" not in session:
         return abort(404)
     conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
     # conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
@@ -81,7 +81,7 @@ def fav():
 
 @home.route("/mybuy/")
 def mybuy():
-    if not "user" in session:
+    if "user" not in session:
         return abort(404)
     conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
     # conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
@@ -199,9 +199,8 @@ def out():
 
 # 个人中心——修改个人资料
 @home.route("/user/", methods=["GET", "POST"])
-# @user_login_req
 def user():
-    if not "user" in session:
+    if "user" not in session:
         return abort(404)
     form = UserdetailForm()
     user = User.query.get(int(session["user_id"]))
@@ -231,6 +230,7 @@ def user():
         user.phone = data["phone"]
         db.session.add(user)
         db.session.commit()
+        session["user"] = user.name
         flash("修改成功！", "ok")
         return redirect(url_for("home.user"))
     return render_template("home/user.html", name=session.get('user'), form=form, user=user)
@@ -239,7 +239,7 @@ def user():
 # 个人中心——密码修改
 @home.route("/pwd/", methods=["GET", "POST"])
 def pwd():
-    if not "user" in session:
+    if "user" not in session:
         return abort(404)
     form = PwdForm()
     if form.validate_on_submit():
@@ -259,7 +259,7 @@ def pwd():
 # 个人中心——订阅会员
 @home.route("/sub/", methods=["GET", "POST"])
 def sub():
-    if not "user" in session:
+    if "user" not in session:
         return abort(404)
     form = PwdForm()
     if form.validate_on_submit():
@@ -305,7 +305,7 @@ def getsub():
 # 个人中心——充值钱包
 @home.route("/wallet/", methods=["GET", "POST"])
 def wallet():
-    if not "user" in session:
+    if "user" not in session:
         return abort(404)
     userm = User.query.filter_by(name=session["user"]).first()
     form = WalletForm()
@@ -423,7 +423,7 @@ def register():
 # 收藏音乐
 @home.route("/like/")
 def like():
-    if not "user" in session:
+    if "user" not in session:
         return abort(404)
     conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
     # conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')

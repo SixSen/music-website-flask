@@ -15,7 +15,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:1232123@127.0.0.1:3306/mus
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:nucoj@39.106.214.230:3306/musicdb"
 app.debug = True
-# Secret_key用于密码加盐与
+# Secret_key用于密码加盐与CSRF验证
 app.secret_key = "Sixsense1212qwqwasas"
 
 app.config["UP_DIR"] = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static/uploads/")

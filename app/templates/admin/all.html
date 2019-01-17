@@ -10,7 +10,7 @@
             <div class="alert alert-success alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
                 </button>
-                <h4><i class="icon fa fa-check"></i> 注销成功</h4>
+                <h4><i class="icon fa fa-check"></i> 操作成功</h4>
                 {{ msg }}
             </div>
         {% endfor %}
@@ -34,7 +34,7 @@
 
                     {% if v.vclass == 1 %}
                         <tr class="warning">
-                            {% elif v.vclass == -1 %}
+                            {% elif v.vclass < 0  %}
                         <tr class="danger">
                             {% else %}
                         <tr class="">
@@ -45,10 +45,10 @@
                 <td>{{ v.phone }}</td>
                 {% if v.vclass == 1 %}
                     <td>订阅会员</td>
-                    {% elif v.vclass < 0 %}
+                {% elif v.vclass < 0 %}
                     <td>已经注销</td>
                 {% else %}
-                    <td> - </td>
+                    <td> -</td>
                 {% endif %}
                 <td>{{ v.wallet }}</td>
                 {% if v.vclass == 1 %}
@@ -57,8 +57,17 @@
                     <td>- - -</td>
                 {% endif %}
 
-                <td><a target="_self" href="{{ url_for('admin.deuser',id=v.id) }}"
-                       style="color: red">&nbsp;注销</a></td>
+
+                {% if v.vclass <0  %}
+
+                    <td><a target="_self" href="{{ url_for('admin.reuser',id=v.id) }}"
+                           style="color: red">&nbsp;恢复</a></td>
+                {% else %}
+
+                    <td><a target="_self" href="{{ url_for('admin.deuser',id=v.id) }}"
+                           style="color: red">&nbsp;注销</a></td>
+                {% endif %}
+
                 </tr>
                 {% endfor %}
             </table>

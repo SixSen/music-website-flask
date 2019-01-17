@@ -5,6 +5,7 @@ from app.models import User, Music, Board, Buy, db, Library, Admin, Author
 from flask import render_template, redirect, url_for, flash, session, request
 from app.admin.forms import LoginForm, AuthorForm
 
+
 # 路由定义使用装饰器进行定义
 @admin.route("/", methods=["GET", "POST"])
 def index():
@@ -37,8 +38,10 @@ def all():
     form = User.query.all()
     # print(form)
     admin_id = session.get("admin_id")
-    return render_template("admin/all.html", id=admin_id ,form = form)
+    return render_template("admin/all.html", id=admin_id, form=form)
 
+
+# 注销用户
 @admin.route("/deuser/")
 def deuser():
     if not "admin_id" in session:
@@ -46,14 +49,37 @@ def deuser():
     uid = int(request.args.get("id"))
     form = User.query.all()
     admin_id = session.get("admin_id")
-    user = User.query.filter(User.id==uid).first()
-    # print(musicd)
-    user.vclass = -1
+    user = User.query.filter(User.id == uid).first()
+    # 会员注销后为-1
+    if user.vclass == 1:
+        user.vclass = -1
+    # 非会员注销后为-2
+    else:
+        user.vclass = -2
     db.session.add(user)
     db.session.commit()
     flash("已经成功注销id为%d的用户" % uid, "ok")
     return redirect(url_for('admin.all'))
 
+
+# 恢复注销
+@admin.route("/reuser/")
+def reuser():
+    if not "admin_id" in session:
+        return abort(403)
+    uid = int(request.args.get("id"))
+    form = User.query.all()
+    admin_id = session.get("admin_id")
+    user = User.query.filter(User.id == uid).first()
+
+    if user.vclass == -1:
+        user.vclass = 1
+    else:
+        user.vclass = 0
+    db.session.add(user)
+    db.session.commit()
+    flash("已经成功恢复id为%d的用户" % uid, "ok")
+    return redirect(url_for('admin.all'))
 
 
 # 删除歌曲
@@ -66,7 +92,7 @@ def delete_music(music_id):
             db.session.delete(music)
             db.session.commit()
         except Exception as e:
-            print (e)
+            print(e)
             flash('删除歌曲失败')
             db.session.rollback()
     else:
@@ -98,12 +124,13 @@ def manage():
             # 没有重复歌曲就添加歌曲
             else:
                 try:
-                    new_music = Music(music_name=music_name, author=author_name, style=author_form.style.data, free=author_form.free.data, address=author_form.address.data)
+                    new_music = Music(music_name=music_name, author=author_name, style=author_form.style.data,
+                                      free=author_form.free.data, address=author_form.address.data)
                     db.session.add(new_music)
                     db.session.commit()
                     flash("添加成功")
                 except Exception as e:
-                    print (e)
+                    print(e)
                     flash('添加歌曲失败')
                     db.session.rollback()
         else:
@@ -113,12 +140,13 @@ def manage():
                 db.session.add(new_author)
                 db.session.commit()
 
-                new_music = Music(music_name=music_name, author=author_name, style=author_form.style.data,  free=author_form.free.data, address=author_form.address.data)
+                new_music = Music(music_name=music_name, author=author_name, style=author_form.style.data,
+                                  free=author_form.free.data, address=author_form.address.data)
                 db.session.add(new_music)
                 db.session.commit()
                 flash("添加成功")
             except Exception as e:
-                print (e)
+                print(e)
                 flash('添加歌手和歌曲失败')
                 db.session.rollback()
     else:
