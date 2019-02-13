@@ -1,0 +1,63 @@
+CREATE DATABASE  IF NOT EXISTS `musicdb` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `musicdb`;
+-- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: musicdb
+-- ------------------------------------------------------
+-- Server version	5.7.17-log
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `pwd` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `vclass` int(11) NOT NULL,
+  `phone` varchar(11) NOT NULL,
+  `end` datetime NOT NULL,
+  `wallet` float NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `phone` (`phone`),
+  KEY `ix_user_end` (`end`)
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (40,'SixSense','pbkdf2:sha256:50000$FbjkA6hU$f1a64db57b47b755fa1cda20cec27f8c7c31ed23193843d7aa101a44f2f1a554','zhangximeng1212@foxmail.com',1,'13051188398','2019-02-14 21:18:35',15),(42,'test','pbkdf2:sha256:50000$ZNlxSeAR$5c481fb0cf81aeb9ee79e9cba65c2d6683e3772ff21539589cf5b5d35456edfe','16070641@st.nuc.edu.cn',0,'18406587185','2019-01-15 21:30:23',42),(43,'注销测试','pbkdf2:sha256:50000$Qu76Se9T$b074c66e152f86080126d06dcfb051d927944fda3c3658e518b6c01719f93084','12313123@126.com',-1,'13231111111','2019-01-16 08:24:48',0),(44,'vip','pbkdf2:sha256:50000$fVveSdQm$0cbe02f49c33e0fc360f4e9b38867a9afd87da842ed8fa7ab6d1d080bc282d91','12313@126.com',1,'13231111000','2019-02-16 21:39:25',1),(45,'sql_p','pbkdf2:sha256:50000$ROlLCt6g$be0b7b7e1388dad3933b8ecf0ed8cf468136a662e5767d27c479653c361c99b9','1607064@st.nuc.edu.cn',0,'13051188399','2019-01-18 09:46:32',0),(46,'sql','pbkdf2:sha256:50000$j7DV8B8J$606a5243d5aa06e8ff72ee3df57cbef729c3ac0b2d1c8a5e7b5592bee8f8c5af','brgc1232123@foxmail.com',1,'13051188311','2019-02-17 15:01:52',31),(47,'888','pbkdf2:sha256:50000$cVVuBWw6$d1139f261d7e6ad23e13ad3b1174463fa1ad5f62e0118599f2eb6ec2aa259078','123@163。com',0,'15002175898','2019-01-18 15:00:40',0);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2019-02-13  9:38:47

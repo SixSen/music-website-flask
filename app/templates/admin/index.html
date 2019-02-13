@@ -1,0 +1,110 @@
+{% extends "admin/home.html" %}
+{% block name %}
+    管理员： {{ id }}
+{% endblock %}
+
+{% block content %}
+
+    {% include "admin/menu.html" %}
+
+    <div>
+
+
+        <div style="width: auto">
+            {% for msg in get_flashed_messages() %}
+                <div class="alert alert-warning alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
+                    </button>
+                    <h3>{{ msg }}</h3>
+                </div>
+            {% endfor %}
+
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>歌曲id</th>
+                    <th>歌曲名</th>
+                    <th>歌手</th>
+                    <th>下载次数</th>
+                    <th>播放次数</th>
+                    <th>曲风</th>
+                    <th>是否免费</th>
+                    <th>删除歌曲</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for v in music %}
+                    <tr class="">
+                        <td>{{ v.music_id }}</td>
+                        <td>{{ v.music_name }}</td>
+                        <td>{{ v.author }}</td>
+                        <td>{{ v.download }}</td>
+                        <td>{{ v.listen }}</td>
+                        <td>{{ v.style }}</td>
+                        {% if v.free == 1 %}
+                            <td>免费</td>
+                        {% else %}
+                            <td>收费</td>
+                        {% endif %}
+
+                        <td><a target="_self" href="{{ url_for("admin.delete_music",music_id=v.music_id) }}"
+                               style="color: red">&nbsp;删除</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+        </div>
+    </div>
+    </div>
+
+    <div class="col-md-9" style="margin-left: 200px">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-headphones"></span>&nbsp;添加歌曲</h3>
+            </div>
+            <div class="panel-body" style="margin-left: 200px">
+
+
+                <form role="form" method="post">
+                    {{ form.csrf_token() }}
+                    <div class="form-group">
+                        <label for="name">{{ form.author.label }}</label>
+                        {{ form.author }}
+                    </div>
+                    <div class="form-group">
+                        <label for="name">{{ form.music.label }}</label>
+                        {{ form.music }}
+                    </div>
+                    <div class="form-group">
+                        <label for="name">{{ form.style.label }}</label>
+                        {{ form.style }}
+                    </div>
+                    <div class="form-group">
+                        <label for="name">{{ form.free.label }}</label>
+                        {{ form.free }}
+                    </div>
+                    <div class="form-group">
+                        <label for="name">{{ form.address.label }}</label>
+                        {{ form.address }}
+                    </div>
+                    {{ form.submit }}<br>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $("#m1").addClass("active");
+        })
+    </script>
+{% endblock %}

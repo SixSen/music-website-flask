@@ -1,0 +1,16 @@
+{% extends "home/home.html" %}
+
+{% block username %}
+    {{ name }}
+{% endblock %}
+{% block content %}
+
+    {% for msg in get_flashed_messages() %}
+        <h1>
+            {{ msg }}
+        </h1>
+    {% endfor %}
+    <br>
+    <a href="javascript:history.back();" class="btn btn-primary"
+       target="_blank" role="button"><span class="glyphicon glyphicon-menu-left"></span>&nbsp;返回</a>
+{% endblock %}

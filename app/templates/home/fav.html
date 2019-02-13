@@ -1,0 +1,64 @@
+{% extends "home/home.html" %}
+
+
+{% block username %}
+    {{ name }}
+{% endblock %}
+
+{% block content %}
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{{ url_for('home.fav') }}">我喜欢的音乐</a></li>
+        <li><a href="{{ url_for('home.mybuy') }}">已购买</a></li>
+        <li><a href="{{ url_for('home.pop') }}">Pop榜</a></li>
+        <li><a href="{{ url_for('home.jazz') }}">Jazz榜</a></li>
+        <li><a href="{{ url_for('home.rb') }}">R&B榜</a></li>
+        <li><a href="{{ url_for('home.cla') }}">Classical榜</a></li>
+        <li><a href="{{ url_for('home.folk') }}">Folk榜</a></li>
+    </ul>
+
+    <div class="col-md-12">
+        <div class="row wow fadeIn" data-wow-delay="0.2s">
+            {% for v in page_data %}
+                <div class="media">
+                    <div class="media-left" style="width: 5000px;margin-right: 400px">
+                        {#                    <a href="{{ url_for('home.play',id=v.music_id) }}">#}
+                        <h4>{{ v.music_name }}</h4>
+                        {#                    </a>#}
+                    </div>
+                    <div class="media-body" style="margin-left: auto">
+                        <h5 class="media-heading">{{ v.author }}<a href="{{ url_for('home.play',id=v.music_id) }}"
+                                                                   class="label label-primary pull-right"><span
+                                class="glyphicon glyphicon-play"></span>&nbsp;播放音乐</a></h5>
+                        <h5 class="media-heading">播放次数：{{ v.listen }}<a
+                                href="{{ url_for('home.del_like',id=v.music_id) }}"
+                                class="label label-primary pull-right"><span
+                                class="glyphicon glyphicon-star-empty"></span>&nbsp;取消收藏</a></h5>
+                        <h5 class="media-heading">歌曲风格：{{ v.style }}
+                            {% if v.free == 0 %}
+                                <a href="{{ url_for('home.buy', id=v.music_id) }}"
+                                   class="label label-primary pull-right"><span
+                                        class="glyphicon glyphicon-shopping-cart"></span>&nbsp;购买音乐</a></h5>
+                            {% endif %}
+                        </h5>
+
+                    </div>
+                </div>
+
+
+            {% endfor %}
+        </div>
+        <br>
+        <br>
+        {% for msg in get_flashed_messages(category_filter=["ok"]) %}
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
+                </button>
+                <h4><i class="icon fa fa-check"></i> 取消成功</h4>
+                {{ msg }}
+            </div>
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

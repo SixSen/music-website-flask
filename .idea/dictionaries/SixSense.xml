@@ -1,7 +1,15 @@
 <component name="ProjectDictionaryState">
   <dictionary name="SixSense">
     <words>
+      <w>getsub</w>
+      <w>glyphicon</w>
+      <w>isbuy</w>
+      <w>musicd</w>
       <w>musicdb</w>
+      <w>musicid</w>
+      <w>mybuy</w>
+      <w>pymysql</w>
+      <w>repwd</w>
       <w>sqlalchemy</w>
       <w>tablename</w>
       <w>vclass</w>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no">
+    <link rel="shortcut icon" href="{{ url_for('static',filename='base/images/logo.png') }}">
+    <title>微音乐后台管理系统</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='base/css/bootstrap.min.css') }}">
+{#        <link rel="stylesheet" href="{{ url_for('static',filename='base/css/bootstrap-movie.css') }}">#}
+    <link rel="stylesheet" href="{{ url_for('static',filename='base/css/animate.css') }}">
+    <img src="{{ url_for('static',filename='base/images/logo.png') }}" style="height:30px;" alt="logo">
+       <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+   <script src="//cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+   <script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <script src="{{ url_for('static',filename='base/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='base/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='base/js/jquery.singlePageNav.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='base/js/wow.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='lazyload/jquery.lazyload.min.js') }}"></script>
+
+    <style>
+        .navbar-brand > img {
+            display: inline;
+        }
+
+    </style>
+    <style>
+        .media {
+            padding: 3px;
+            border: 1px solid #ccc
+        }
+
+    </style>
+</head>
+
+<body>
+<script src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+<!--导航-->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <!--小屏幕导航按钮和logo-->
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="https://github.com/SixSen/Sql_p/tree/Finished" target="_blank" class="navbar-brand" style="width:250px;">
+                &nbsp;微音乐后台管理
+            </a>
+        </div>
+        <!--小屏幕导航按钮和logo-->
+        <!--导航-->
+ <ul class="nav navbar-nav navbar-right">
+
+                <li>
+                    <a class="curlink" href="{{ url_for('admin.logout') }}"><span
+                            class="glyphicon glyphicon-log-out"></span>&nbsp;退出</a>
+                </li>
+
+            </ul>
+
+        <!--导航-->
+
+    </div>
+</nav>
+<!--导航-->
+<!--内容-->
+<div class="container" style="margin-top:50px">
+    {% block content %}{% endblock %}
+</div>
+<!--内容-->
+<!--底部-->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" style="text-align: center">
+                <p>
+                    <br>
+                <hr>
+                16070641&nbsp;数据库课程设计.音乐库管理系统&nbsp;基于Flask与MySQL数据库
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+<!--底部-->
+<script src="//cdn.bootcss.com/holder/2.9.4/holder.min.js"></script>
+
+<script>
+    $(function () {
+        new WOW().init();
+    })
+
+</script>
+<script>
+    $(document).ready(function () {
+        $("img.lazy").lazyload({
+            effect: "fadeIn"
+        });
+        $("#do_search").click(function () {
+            var key = $("#key_music").val();
+            location.href = "{{ url_for('home.play')}}
+        });
+    });
+</script>
+{% block js %}
+
+{% endblock %}
+</body>
+</html>
