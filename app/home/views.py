@@ -59,7 +59,7 @@ def fav():
     if "user" not in session:
         return abort(404)
     conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
-    # conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
+   
     cursor = conn.cursor()
     sql = "SELECT music_id FROM library WHERE id = '%s' " % session.get("user_id")
     cursor.execute(sql)
@@ -84,7 +84,7 @@ def mybuy():
     if "user" not in session:
         return abort(404)
     conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
-    # conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
+
     cursor = conn.cursor()
     sql = "SELECT music_id FROM buy WHERE id = '%s' " % session.get("user_id")
     cursor.execute(sql)
@@ -329,21 +329,31 @@ def wallet():
 # 播放音乐
 @home.route("/play/")
 def play():
+    isbuy = 0
+
     conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
-    # conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
-    if session.get('user') is None:
-        flash("请先登录才继续接下来的操作", "err")
-        return redirect(url_for('home.login'))
     cursor = conn.cursor()
     musicid = int(request.args.get('id'))
-    vclass = session.get('vclass')
-    isbuy = 0
     sql = "SELECT free FROM music WHERE music_id = '%s' " % musicid
     cursor.execute(sql)
     results0 = cursor.fetchall()
     for k in results0:
         if 1 == k[0]:
             isbuy = 1
+
+    # conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
+    if session.get('user') is None:
+        if isbuy == 1:
+            music = Music.query.filter(
+                Music.music_id == musicid
+            ).first()
+            return render_template("home/play.html", mus=music)
+        flash("请先登录才继续接下来的操作", "err")
+        return redirect(url_for('home.login'))
+
+    vclass = session.get('vclass')
+
+
     if vclass == 0:
         id = session.get('user_id')
         sql = "SELECT music_id FROM buy WHERE id = '%s' " % id
@@ -364,8 +374,7 @@ def play():
             # print(music.listen)
             db.session.add(music)
             db.session.commit()
-            return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicid,
-                                   add=add, mus=music)
+            return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), mus=music)
         else:
             flash('请先购买此歌曲或订阅会员-err:%d' % musicid)
             return render_template("home/msg.html", name=session.get('user'))
@@ -381,9 +390,7 @@ def play():
         # print(music.listen)
         db.session.add(music)
         db.session.commit()
-        print(music)
-        return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), id=musicid,
-                               add=add, mus=music)
+        return render_template("home/play.html", name=session.get('user'), user=session.get('user_id'), mus=music)
 
 
 # 下载音乐
@@ -426,7 +433,6 @@ def like():
     if "user" not in session:
         return abort(404)
     conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
-    # conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
     musicd = int(request.args.get('id'))
     # print(musicd)
     user_id = session.get('user_id')
@@ -465,7 +471,6 @@ def del_like():
 @home.route("/buy")
 def buy():
     conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
-    # conn = pymysql.connect(host='39.106.214.230', port=3306, user='root', passwd='nucoj', db='musicdb')
     musicd = int(request.args.get('id'))
     user_id = session.get('user_id')
     cursor = conn.cursor()
@@ -528,12 +533,8 @@ def search():
     ).order_by(
         Music.listen.desc()
     )
+
+
     page_data.key = key
-    # conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='1232123', db='musicdb')
-    # cursor = conn.cursor()
-    # sql = "SELECT * FROM music WHERE music_name = '%s' " % key
-    #
-    # cursor.execute(sql)
-    # results = cursor.fetchall()
-    # print(results)
+
     return render_template("home/search.html", name=session.get('user'), key=key, count=count, page_data=page_data)

@@ -1,4 +1,4 @@
-{% extends "home/nav.html" %}
+{% extends "home/home.html" %}
 
 {% block username %}
     {{ name }}
@@ -6,14 +6,17 @@
 
 {% block content %}
     <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width=530 height=86
-            src="//music.163.com/outchain/player?type=2&id={{ add }}&auto=1&height=66"></iframe>
+            src="//music.163.com/outchain/player?type=2&id={{ mus.address }}&auto=1&height=66"></iframe>
     <br>
-    <h5>&nbsp;&nbsp;&nbsp;用户id：{{ name }}——会话id：{{ user }}————播放了music_id为{{ id }}的歌曲:{{ mus.music_name }}</h5>
+    <h5>&nbsp;&nbsp;&nbsp;播放了music_id为{{ mus.music_id }}的歌曲:{{ mus.music_name }}</h5>
     <h5>&nbsp;&nbsp;&nbsp;播放次数：{{ mus.listen }} ———— 下载次数：{{ mus.download }}</h5>
     <div class="btn-group-lg">&nbsp;
     <a href="javascript:history.back(-1);" class="btn btn-success"
        target="_blank" role="button"><span class="glyphicon glyphicon-menu-left"></span>&nbsp;返回</a>
-    <a href="{{ url_for('home.download',id=id) }}" target="_blank" class="btn btn-default" role="button">
-        <span class="glyphicon glyphicon-download"></span>&nbsp;下载</a>
+    {% if name %}
+        <a href="{{ url_for('home.download',id=mus.music_id) }}" target="_blank" class="btn btn-default" role="button">
+            <span class="glyphicon glyphicon-download"></span>&nbsp;下载</a>
+    {% endif %}
+
 {% endblock %}
 </div>

@@ -1,8 +1,6 @@
 import os
 # from config.base_config import SQLALCHEMY_DATABASE_URI
 
-__author__ = 'mtianyan'
-__date__ = '2017/8/26 17:05'
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_redis import FlaskRedis
@@ -13,10 +11,9 @@ app = Flask(__name__)
 # 用于连接数据的数据库。
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:1232123@127.0.0.1:3306/musicdb"
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:nucoj@39.106.214.230:3306/musicdb"
 app.debug = True
 # Secret_key用于密码加盐与CSRF验证
-app.secret_key = "Sixsense1212qwqwasas"
+app.secret_key = "SiwjdisI211wqwasas"
 
 app.config["UP_DIR"] = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static/uploads/")
 app.config["FC_DIR"] = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static/uploads/users/")

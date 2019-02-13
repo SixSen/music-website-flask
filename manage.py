@@ -5,4 +5,4 @@ from flask_script import Manager
 manage = Manager(app)
 
 if __name__ == "__main__":
-    manage.run(processes=3)
+    manage.run()

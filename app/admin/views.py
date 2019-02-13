@@ -25,6 +25,7 @@ def index():
     return render_template("admin/login.html", form=form)
 
 
+
 @admin.route("/logout/")
 def logout():
     session.pop("admin_id", None)

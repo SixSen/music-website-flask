@@ -11,8 +11,6 @@ app = Flask(__name__)
 
 # 用于连接数据的数据库。
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:1232123@127.0.0.1:3306/musicdb"
-
-# app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:nucoj@39.106.214.230:3306/musicdb"
 # Flask-SQLAlchemy 将会追踪对象的修改并且发送信号。
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -92,7 +90,7 @@ class List(db.Model):
 
 class Buy(db.Model):
     __tablename__ = 'buy'
-    buy_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)  #
+    buy_id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)  # 购买id
     id = db.Column(db.Integer, nullable=False)  # 购买歌曲用户id
     music_id = db.Column(db.Integer, nullable=False)  # 已购买歌曲id
 
